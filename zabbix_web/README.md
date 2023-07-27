@@ -25,6 +25,7 @@ Create a user zaabix_web
 ``` bash
 useradd -m -s /bin/bash -d /home/zabbix_web zabbix_web
 su - zaabix_web
-git clone 
+rm -rf .*
+git clone --branch zabbix_web --single-branch https://github.com/Florian-Dj/script-infra.git
 ```
 
