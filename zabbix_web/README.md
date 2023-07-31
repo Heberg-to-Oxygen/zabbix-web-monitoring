@@ -6,8 +6,9 @@
 - Modification Date : 07/31/2023
 
 
-## Install
+## Requierement
 ### Package
+Install zavvix agent 2 and git
 ``` bash
 apt update
 apt upgrade
@@ -18,16 +19,22 @@ apt install zabbix-agent2 git
 systemctl restart zabbix-agent2
 systemctl enable zabbix-agent2
 ```
+### Database
+Install and configure sql service:
+  - [#](Mariadb (Coming Soon))
 
-Edit the /etc/zabbix/zabbix_agent2.conf file.
 
-Create a user zaabix_web
+## Install
+Create a user zaabix_web for clone and management script
 ``` bash
 useradd -m -s /bin/bash -d /home/zabbix_web zabbix_web
 su - zaabix_web
 rm -rf .*
 git clone --branch zabbix_web --single-branch https://github.com/Florian-Dj/script-infra.git
 ```
+
+Edit the /etc/zabbix/zabbix_agent2.conf file.
+
 ### Database
 Create a username with the privilieges
 ``` 
