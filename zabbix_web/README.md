@@ -21,24 +21,25 @@ systemctl enable zabbix-agent2
 ```
 ### Database
 Install and configure sql service:
-  - [#](Mariadb (Coming Soon))
+  - [Mariadb (Coming Soon)](https://www.digitalocean.com/community/tutorials/how-to-install-mariadb-on-debian-11)
 
 
 ## Install
 Create a user zaabix_web for clone and management script
 ``` bash
 useradd -m -s /bin/bash -d /home/zabbix_web zabbix_web
-su - zaabix_web
-rm -rf .*
+su - zabbix_web
 git clone --branch zabbix_web --single-branch https://github.com/Florian-Dj/script-infra.git
 ```
 
 Edit the /etc/zabbix/zabbix_agent2.conf file.
 
 ### Database
-Create a username with the privilieges
+Create a username with grant all privilieges on database zabbix_web
 ``` 
-
+CREATE DATABASE IF NOT EXISTS `zabbix_web`;
+CREATE USER 'zabbix_web'@'%' IDENTIFIED BY 'StrongPassword';
+GRANT SELECT,INSERT, UPDATE, DELETE, CREATE, DROP, REFERENCES, INDEX, ALTER, CREATE TEMPORARY TABLES, LOCK TABLES, EXECUTE, CREATE VIEW, SHOW VIEW, CREATE ROUTINE, ALTER ROUTINE, EVENT, TRIGGER ON `zabbix_web`.* TO 'zabbix_web'@'%';
 ```
 
 Insert a sql structure file in database
