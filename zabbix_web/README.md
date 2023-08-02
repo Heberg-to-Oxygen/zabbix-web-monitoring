@@ -19,9 +19,11 @@ apt install zabbix-agent2 git
 systemctl restart zabbix-agent2
 systemctl enable zabbix-agent2
 ```
+Edit the /etc/zabbix/zabbix_agent2.conf file.
+
 ### Database
 Install and configure sql service:
-  - [Mariadb (Coming Soon)](https://www.digitalocean.com/community/tutorials/how-to-install-mariadb-on-debian-11)
+  - [Mariadb](https://www.digitalocean.com/community/tutorials/how-to-install-mariadb-on-debian-11)
 
 
 ## Install
@@ -31,8 +33,6 @@ useradd -m -s /bin/bash -d /home/zabbix_web zabbix_web
 su - zabbix_web
 git clone --branch zabbix_web --single-branch https://github.com/Florian-Dj/script-infra.git
 ```
-
-Edit the /etc/zabbix/zabbix_agent2.conf file.
 
 ### Database
 Create a username with grant all privilieges on database zabbix_web
