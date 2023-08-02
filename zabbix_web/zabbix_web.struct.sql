@@ -1,3 +1,12 @@
+/*
+###########################
+# Author : DJERBI Florian
+# Object : Management a website with zabbix discovery
+# Creation Date : 07/29/2023
+# Modification Date : 08/02/2023
+###########################
+*/
+
 /* Create a zabbix_web table */
 CREATE DATABASE IF NOT EXISTS `zabbix_web`;
 
@@ -24,7 +33,7 @@ CREATE TABLE `web` (
   `web_id` int(11) NOT NULL AUTO_INCREMENT,
   `web_domain` varchar(255) NOT NULL,
   `web_url` varchar(255) NOT NULL,
-  `php_version` varchar(16) DEFAULT NULL,
+  `web_php_version` varchar(16) DEFAULT NULL,
   `web_env` varchar(16) NOT NULL,
   `web_support` varchar(40) NOT NULL,
   `web_status` varchar(40) DEFAULT 'enabled',
