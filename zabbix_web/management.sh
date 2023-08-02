@@ -9,35 +9,34 @@
 #
 # VARIABLES
 #
-PATH=/usr/sbin:/usr/bin:/sbin:/bin
-database="zabbix_website"
+source variable
 
-# Colors
-_red='\033[1;31m'
-_green='\033[0;32m'
-_blue='\033[0;36m'
-_reset='\033[0m'
 
 #
 # FUNCTIONS
 #
-
 function coming_soon(){
     printf "\n${_blue}Feature coming soon !${_reset}\n"
 }
 
+function insert_sql() {
+    created=$(date "+%Y-%m-%d %T")
+    echo "INSERT IGNORE INTO web (web_domain, web_url, web_server, web_env, web_support, web_created) VALUES ('${domain}', '${url}', '${id_server}', '${env}', '${support}', '${created}');" | mysql -u${db_user} -p${db_password} ${db_database}
+}
+
 # Add Website
 function add_website() {
-    echo -n "Domaine du site: "
+    echo -n "Site Domaine : "
     read domain
-    echo -n "URL du site: "
+    echo -n "Site URL : "
     read url
-    echo -n "Serveur du site: "
+    echo -n "Site Serveur : "
     read server
-    echo -n "Prod ou PréProd ou Dev ? (prod/pp/dev): "
+    echo -n "Environment (prod;pp;dev) : "
     read env
-    echo -n "Support Infra ? (24/7 ; 8/17): "
+    echo -n "Infra Support (24/7;hours working) : "
     read support
+    echo "${domain}, ${url}, ${server}, ${env}, ${support}"
 }
 
 # Update Website
