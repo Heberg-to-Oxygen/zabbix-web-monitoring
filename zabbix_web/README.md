@@ -45,6 +45,6 @@ GRANT SELECT,INSERT, UPDATE, DELETE, CREATE, DROP, REFERENCES, INDEX, ALTER, CRE
 Insert a sql structure file in database
 
 ``` bash
-sudo mysql -u `username` -p zabbix_web < zabbix_web.struct.sql
+mysql -u zabbix_web -p zabbix_web < zabbix_web.struct.sql
 ```
 

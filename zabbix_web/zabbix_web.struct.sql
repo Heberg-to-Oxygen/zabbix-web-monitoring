@@ -1,5 +1,5 @@
 /* Create a zabbix_web table */
-CREATE DATABASE `zabbix_web`;
+CREATE DATABASE IF NOT EXISTS `zabbix_web`;
 
 USE `zabbix_web`;
 
