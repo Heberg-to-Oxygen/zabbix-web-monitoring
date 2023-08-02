@@ -3,12 +3,12 @@
 - Author : DJERBI Florian
 - Object : Monitoring a website on Zabbix 
 - Creation Date : 07/27/2023
-- Modification Date : 07/31/2023
+- Modification Date : 08/02/2023
 
 
 ## Requierement
 ### Package
-Install zavvix agent 2 and git
+Install zabbix agent 2 and git
 ``` bash
 apt update
 apt upgrade
@@ -19,7 +19,7 @@ apt install zabbix-agent2 git
 systemctl restart zabbix-agent2
 systemctl enable zabbix-agent2
 ```
-Edit the /etc/zabbix/zabbix_agent2.conf file.
+Edit the /etc/zabbix/zabbix_agent2.conf file with a correct IP zabbix server
 
 ### Database
 Install and configure sql service:
@@ -43,8 +43,8 @@ GRANT SELECT,INSERT, UPDATE, DELETE, CREATE, DROP, REFERENCES, INDEX, ALTER, CRE
 ```
 
 Insert a sql structure file in database
-
 ``` bash
+cd ~/script-infra/zabbix_web
 mysql -u zabbix_web -p zabbix_web < zabbix_web.struct.sql
 ```
 
