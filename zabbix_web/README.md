@@ -3,7 +3,7 @@
 - Author : DJERBI Florian
 - Object : Monitoring a website on Zabbix 
 - Creation Date : 07/27/2023
-- Modification Date : 08/02/2023
+- Modification Date : 08/07/2023
 
 
 ## Requierement
@@ -32,18 +32,22 @@ Create a user zaabix_web for clone and management script
 useradd -m -s /bin/bash -d /home/zabbix_web zabbix_web
 su - zabbix_web
 git clone --branch zabbix_web --single-branch https://github.com/Florian-Dj/script-infra.git
+su - zabbix_web
+cd ~/script-infra/zabbix_web
+cp variable.template variable  # Edit file with a real db informations
 ```
 
 ### Database
-Create a username with grant all privilieges on database zabbix_web
+Create a username with grant privilieges on database zabbix_web
 ``` 
 CREATE DATABASE IF NOT EXISTS `zabbix_web`;
 CREATE USER 'zabbix_web'@'%' IDENTIFIED BY 'StrongPassword';
-GRANT SELECT,INSERT, UPDATE, DELETE, CREATE, DROP, REFERENCES, INDEX, ALTER, CREATE TEMPORARY TABLES, LOCK TABLES, EXECUTE, CREATE VIEW, SHOW VIEW, CREATE ROUTINE, ALTER ROUTINE, EVENT, TRIGGER ON `zabbix_web`.* TO 'zabbix_web'@'%';
+GRANT SELECT, INSERT, UPDATE ON `zabbix_web`.* TO 'zabbix_web'@'%';
 ```
 
-Insert a sql structure file in database
+Insert a sql structure file in database with a zaabix_web user
 ``` bash
+su - zabbix_web
 cd ~/script-infra/zabbix_web
 mysql -u zabbix_web -p zabbix_web < zabbix_web.struct.sql
 ```
