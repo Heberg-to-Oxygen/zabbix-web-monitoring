@@ -67,7 +67,7 @@ function list_website() {
         do
             echo "    - $item"
         done <<<$domain
-    done < <(mysql -u${db_user} -p${db_password} ${db_database} -N -e "SELECT GROUP_CONCAT(web_domain SEPARATOR ','), server.server_name FROM web LEFT JOIN server ON server.server_id=web.web_server  GROUP BY web_server")
+    done < <(mysql -u${db_user} -p${db_password} ${db_database} -N -e "SELECT GROUP_CONCAT(web_domain SEPARATOR ','), web_server FROM web GROUP BY web_server")
     mgt_website "$@"
 }
 
