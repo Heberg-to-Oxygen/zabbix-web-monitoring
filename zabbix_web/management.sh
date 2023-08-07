@@ -51,7 +51,7 @@ function update_website() {
 }
 
 # Disabled Website
-function delete_website() {
+function disable_website() {
     coming_soon "$@"
     sleep 2
     mgt_website "$@"
@@ -78,7 +78,7 @@ function mgt_website(){
 
   1 - Add website
   2 - Update website
-  3 - Delete website
+  3 - Disable website
   4 - List website
   9 - Back
   0 - Exit
@@ -92,7 +92,7 @@ case $choice in
         update_website "$@"
         ;;
     3)
-        delete_website "$@"
+        disable_website "$@"
         ;;
     4)
         list_website "$@"
@@ -121,7 +121,7 @@ function update_server() {
 }
 
 # Disabled Server
-function delete_server() {
+function disable_server() {
     coming_soon "$@"
     sleep 2
     mgt_server "$@"
@@ -140,7 +140,7 @@ function mgt_server(){
 
   1 - Add server
   2 - Update server
-  3 - Delete server
+  3 - Disable server
   4 - List server
   9 - Back
   0 - Exit
@@ -154,7 +154,7 @@ case $choice in
         update_server "$@"
         ;;
     3)
-        delete_server "$@"
+        disable_server "$@"
         ;;
     4)
         list_server "$@"
