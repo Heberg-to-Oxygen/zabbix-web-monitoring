@@ -34,9 +34,9 @@ function add_website() {
     echo -n "Infra Support (24/7;hours working) : "
     read support
     created=$(date "+%Y-%m-%d %T")
-    echo "${domain}, ${url}, ${server}, ${env}, ${support}, ${created}"
-    # echo "${db_user}, ${db_password}, ${db_database}"
-    echo "INSERT IGNORE INTO web (web_domain, web_url, web_server, web_env, web_support, web_created) VALUES ('${domain}', '${url}', '${server}', '${env}', '${support}', '${created}');" | mysql -u${db_user} -p${db_password} ${db_database}
+    echo "INSERT INTO web (web_domain, web_url, web_server, web_env, web_support, web_created) VALUES ('${domain}', '${url}', '${server}', '${env}', '${support}', '${created}');" | mysql -u${db_user} -p${db_password} ${db_database}
+    echo "You added this information : ${domain}, ${url}, ${server}, ${env}, ${support}"
+    mgt_website "$@"
 }
 
 # Update Website
@@ -46,7 +46,7 @@ function update_website() {
     mgt_website "$@"
 }
 
-# Delete Website
+# Disabled Website
 function delete_website() {
     coming_soon "$@"
     sleep 2
@@ -55,8 +55,15 @@ function delete_website() {
 
 # List Website
 function list_website() {
-    coming_soon "$@"
-    sleep 2
+    echo ""
+    while read domain server
+    do
+        printf "  - ${server}:\n"
+        while read -d"," item || [[ -n "$item" ]]
+        do
+            echo "    - $item"
+        done <<<$domain
+    done < <(mysql -u${user_mysql} -p${password_mysql} ${database} -N -e "SELECT GROUP_CONCAT(web_domain SEPARATOR ','), server.server_name FROM web LEFT JOIN server ON server.server_id=web.web_server  GROUP BY web_server")
     mgt_website "$@"
 }
 
@@ -109,14 +116,14 @@ function update_server() {
     mgt_server "$@"
 }
 
-# Delete Website
+# Disabled Server
 function delete_server() {
     coming_soon "$@"
     sleep 2
     mgt_server "$@"
 }
 
-# List Website
+# List Server
 function list_server() {
     coming_soon "$@"
     sleep 2
