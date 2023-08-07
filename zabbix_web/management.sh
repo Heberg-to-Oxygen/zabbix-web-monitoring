@@ -15,13 +15,10 @@ source variable
 #
 # FUNCTIONS
 #
+
+# Coming Soon
 function coming_soon(){
     printf "\n${_blue}Feature coming soon !${_reset}\n"
-}
-
-function insert_web_sql() {
-    created=$(date "+%Y-%m-%d %T")
-    echo "INSERT IGNORE INTO web (web_domain, web_url, web_server, web_env, web_support, web_created) VALUES ('${domain}', '${url}', '${id_server}', '${env}', '${support}', '${created}');" | mysql -u${db_user} -p${db_password} ${db_database}
 }
 
 # Add Website
@@ -39,7 +36,7 @@ function add_website() {
     created=$(date "+%Y-%m-%d %T")
     echo "${domain}, ${url}, ${server}, ${env}, ${support}, ${created}"
     # echo "${db_user}, ${db_password}, ${db_database}"
-    echo "INSERT IGNORE INTO web (web_domain, web_url, web_server, web_env, web_support, web_created) VALUES ('${domain}', '${url}', '${id_server}', '${env}', '${support}', '${created}');" | mysql -u${db_user} -p${db_password} ${db_database}
+    echo "INSERT IGNORE INTO web (web_domain, web_url, web_server, web_env, web_support, web_created) VALUES ('${domain}', '${url}', '${server}', '${env}', '${support}', '${created}');" | mysql -u${db_user} -p${db_password} ${db_database}
 }
 
 # Update Website

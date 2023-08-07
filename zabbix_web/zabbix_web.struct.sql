@@ -3,7 +3,7 @@
 # Author : DJERBI Florian
 # Object : Management a website with zabbix discovery
 # Creation Date : 07/29/2023
-# Modification Date : 08/02/2023
+# Modification Date : 08/07/2023
 ###########################
 */
 
@@ -42,4 +42,4 @@ CREATE TABLE `web` (
   `web_update` datetime DEFAULT NULL,
   PRIMARY KEY (`web_id`),
   UNIQUE KEY `web_domain` (`web_domain`)
-) ENGINE=InnoDB AUTO_INCREMENT=228 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
