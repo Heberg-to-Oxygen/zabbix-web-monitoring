@@ -21,21 +21,25 @@ function coming_soon(){
     printf "\n${_blue}Feature coming soon !${_reset}\n"
 }
 
+function good_text(){
+    printf "\n${_green}${1}${_reset}\n"
+}
+
 # Add Website
 function add_website() {
-    echo -n "Site Domaine : "
-    read domain
-    echo -n "Site URL : "
-    read url
-    echo -n "Site Serveur : "
-    read server
-    echo -n "Environment (prod;pp;dev) : "
-    read env
-    echo -n "Infra Support (24/7;hours working) : "
-    read support
-    created=$(date "+%Y-%m-%d %T")
-    echo "INSERT INTO web (web_domain, web_url, web_server, web_env, web_support, web_created) VALUES ('${domain}', '${url}', '${server}', '${env}', '${support}', '${created}');" | mysql -u${db_user} -p${db_password} ${db_database}
-    echo "You added this information : ${domain}, ${url}, ${server}, ${env}, ${support}"
+   echo -n "Site Domaine : "
+   read domain
+   echo -n "Site URL : "
+   read url
+   echo -n "Site Serveur : "
+   read server
+   echo -n "Environment (prod;pp;dev) : "
+   read env
+   echo -n "Infra Support (24/7;hours working) : "
+   read support
+   created=$(date "+%Y-%m-%d %T")
+   echo "INSERT INTO web (web_domain, web_url, web_server, web_env, web_support, web_created) VALUES ('${domain}', '${url}', '${server}', '${env}', '${support}', '${created}');" | mysql -u${db_user} -p${db_password} ${db_database}
+    good_text "You added website with this informations : ${domain}, ${url}, ${server}, ${env}, ${support}"
     mgt_website "$@"
 }
 
@@ -63,7 +67,7 @@ function list_website() {
         do
             echo "    - $item"
         done <<<$domain
-    done < <(mysql -u${user_mysql} -p${password_mysql} ${database} -N -e "SELECT GROUP_CONCAT(web_domain SEPARATOR ','), server.server_name FROM web LEFT JOIN server ON server.server_id=web.web_server  GROUP BY web_server")
+    done < <(mysql -u${db_user} -p${db_password} ${db_database} -N -e "SELECT GROUP_CONCAT(web_domain SEPARATOR ','), server.server_name FROM web LEFT JOIN server ON server.server_id=web.web_server  GROUP BY web_server")
     mgt_website "$@"
 }
 
