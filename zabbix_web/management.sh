@@ -21,6 +21,12 @@ function coming_soon(){
     printf "\n${_blue}Feature coming soon !${_reset}\n"
 }
 
+# Wrong choice
+function error_choice(){
+    printf "\n${_red}Please make a correct choice !${_reset}\n"
+    $1 "$@"
+}
+
 function good_text(){
     printf "\n${_green}${1}${_reset}\n"
 }
@@ -103,6 +109,9 @@ case $choice in
     0)
         exit
         ;;
+    *)
+        error_choice "mgt_website"
+	;;
 esac
 }
 
@@ -165,6 +174,9 @@ case $choice in
     0)
         exit
         ;;
+    *)
+        error_choice "mgt_server"
+	;;
 esac
 }
 
@@ -187,6 +199,9 @@ case $choice in
     0)
         exit
         ;;
+    *)
+        error_choice "main"
+	;;
 esac
 }
 
