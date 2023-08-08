@@ -59,10 +59,14 @@ function update_website() {
 # List website with id
 function list_id_website(){
     echo ""
-    while read domain server
+    while read id server status
     do
-        printf "  - ${server}:\n"
-    done < <(mysql -u${db_user} -h${db_host} -p${db_password} ${db_database} -N -e "SELECT web_id, web_domain FROM web")
+        printf "  - ${id} : ${server} (${status}):\n"
+    done < <(mysql -u${db_user} -h${db_host} -p${db_password} ${db_database} -N -e "SELECT web_id, web_domain, web_status FROM web")
+   echo -n "Pleace choose your id website : " id_website
+   read id_website
+   echo ${id_website}
+   echo "UPDATE web SET web_status = !web_status WHERE web_id=${id_website}" | mysql -u${db_user} -h${db_host} -p${db_password} ${db_database}
 }
 
 # Disabled Website
