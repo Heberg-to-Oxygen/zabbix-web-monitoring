@@ -63,10 +63,16 @@ function list_id_website(){
     do
         printf "  - ${id} : ${server} (${status}):\n"
     done < <(mysql -u${db_user} -h${db_host} -p${db_password} ${db_database} -N -e "SELECT web_id, web_domain, web_status FROM web")
-   echo -n "Pleace choose your id website : " id_website
-   read id_website
-   echo ${id_website}
-   echo "UPDATE web SET web_status = !web_status WHERE web_id=${id_website}" | mysql -u${db_user} -h${db_host} -p${db_password} ${db_database}
+    echo -n "Pleace choose your id website : "
+    read id_website
+    echo "UPDATE web SET web_status = !web_status WHERE web_id=${id_website}" | mysql -u${db_user} -h${db_host} -p${db_password} ${db_database}
+    read -e web_domain web_status <<<$(mysql -u${db_user} -h${db_host} -p${db_password} ${db_database} -N -e "SELECT web_domain, web_status FROM web WHERE web_id='${id_website}'")
+    if [ ${web_status} -ne 0 ]; then
+        web_status="False"
+    else
+        web_status="True"
+    fi
+    good_text "Your are updated the website ${web_domain} to ${web_status}"
 }
 
 # Disabled Website
