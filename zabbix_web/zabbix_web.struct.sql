@@ -3,7 +3,7 @@
 # Author : DJERBI Florian
 # Object : Management a website with zabbix discovery
 # Creation Date : 07/29/2023
-# Modification Date : 08/07/2023
+# Modification Date : 08/08/2023
 ###########################
 */
 
@@ -20,10 +20,9 @@ CREATE TABLE `server` (
   `server_id` varchar(64) NOT NULL,
   `server_name` varchar(255) NOT NULL,
   `server_support` varchar(40) DEFAULT NULL,
-  `server_screen` smallint(6) DEFAULT NULL,
+  PRIMARY KEY (`server_id`),
   UNIQUE KEY `server_name` (`server_name`),
-  UNIQUE KEY `server_screen` (`server_screen`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 
 /* Create a web table */
