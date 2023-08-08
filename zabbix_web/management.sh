@@ -3,7 +3,7 @@
 # Author : DJERBI Florian
 # Object : Management a website with zabbix discovery
 # Creation Date : 07/28/2023
-# Modification Date : 08/07/2023
+# Modification Date : 08/08/2023
 ###########################
 
 #
@@ -44,7 +44,7 @@ function add_website() {
    echo -n "Infra Support (24/7;hours working) : "
    read support
    created=$(date "+%Y-%m-%d %T")
-   echo "INSERT INTO web (web_domain, web_url, web_server, web_env, web_support, web_created) VALUES ('${domain}', '${url}', '${server}', '${env}', '${support}', '${created}');" | mysql -u${db_user} -p${db_password} ${db_database}
+   echo "INSERT INTO web (web_domain, web_url, web_server, web_env, web_support, web_created) VALUES ('${domain}', '${url}', '${server}', '${env}', '${support}', '${created}');" | mysql -u${db_user} -h${db_host} -p${db_password} ${db_database}
     good_text "You added website with this informations : ${domain}, ${url}, ${server}, ${env}, ${support}"
     mgt_website "$@"
 }
@@ -56,10 +56,20 @@ function update_website() {
     mgt_website "$@"
 }
 
+# List website with id
+function list_id_website(){
+    echo ""
+    while read domain server
+    do
+        printf "  - ${server}:\n"
+    done < <(mysql -u${db_user} -h${db_host} -p${db_password} ${db_database} -N -e "SELECT web_id, web_domain FROM web")
+}
+
 # Disabled Website
 function status_website() {
-    coming_soon "$@"
-    sleep 2
+    # coming_soon "$@"
+    # sleep 2
+    list_id_website "$@"
     mgt_website "$@"
 }
 
@@ -73,7 +83,7 @@ function list_website() {
         do
             echo "    - $item"
         done <<<$domain
-    done < <(mysql -u${db_user} -p${db_password} ${db_database} -N -e "SELECT GROUP_CONCAT(web_domain SEPARATOR ','), web_server FROM web GROUP BY web_server")
+    done < <(mysql -u${db_user} -h${db_host} -p${db_password} ${db_database} -N -e "SELECT GROUP_CONCAT(web_domain SEPARATOR ','), web_server FROM web GROUP BY web_server")
     mgt_website "$@"
 }
 
@@ -84,7 +94,7 @@ function mgt_website(){
 
   1 - Add website
   2 - Update website
-  3 - Disable website
+  3 - Switch status website
   4 - List website
   9 - Back
   0 - Exit
@@ -149,7 +159,7 @@ function mgt_server(){
 
   1 - Add server
   2 - Update server
-  3 - Disable server
+  3 - Switch status server
   4 - List server
   9 - Back
   0 - Exit

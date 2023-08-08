@@ -18,9 +18,10 @@ _reset='\033[0m'
 
 # DB
 PATH=/usr/sbin:/usr/bin:/sbin:/bin
-db_database="zabbix_web" # Edit if needed
-db_user="zabbix_web" # Edit if needed
-db_password="" # Your password
+db_database="zabbix_web"  # Edit if needed
+db_host="localhost"  # Edit if needed
+db_user="zabbix_web"  # Edit if needed
+db_password=""  # Your password
 
 # Others
 log_file=""
