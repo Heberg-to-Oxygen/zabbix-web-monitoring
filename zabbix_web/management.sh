@@ -57,7 +57,7 @@ function update_website() {
 }
 
 # Disabled Website
-function disable_website() {
+function status_website() {
     coming_soon "$@"
     sleep 2
     mgt_website "$@"
@@ -98,7 +98,7 @@ case $choice in
         update_website "$@"
         ;;
     3)
-        disable_website "$@"
+        status_website "$@"
         ;;
     4)
         list_website "$@"
@@ -130,7 +130,7 @@ function update_server() {
 }
 
 # Disabled Server
-function disable_server() {
+function status_server() {
     coming_soon "$@"
     sleep 2
     mgt_server "$@"
@@ -163,7 +163,7 @@ case $choice in
         update_server "$@"
         ;;
     3)
-        disable_server "$@"
+        status_server "$@"
         ;;
     4)
         list_server "$@"

@@ -36,7 +36,7 @@ CREATE TABLE `web` (
   `web_php_version` varchar(16) DEFAULT NULL,
   `web_env` varchar(16) NOT NULL,
   `web_support` varchar(40) NOT NULL,
-  `web_status` varchar(40) DEFAULT 'enabled',
+  `web_status` BOOLEAN DEFAULT 1,
   `web_server` varchar(64) NOT NULL,
   `web_created` datetime NOT NULL,
   `web_update` datetime DEFAULT NULL,
