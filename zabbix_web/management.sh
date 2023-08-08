@@ -56,8 +56,8 @@ function update_website() {
     mgt_website "$@"
 }
 
-# List website with id
-function list_id_website(){
+# Switch Status Website
+function status_website() {
     echo ""
     while read id server status
     do
@@ -68,18 +68,11 @@ function list_id_website(){
     echo "UPDATE web SET web_status = !web_status WHERE web_id=${id_website}" | mysql -u${db_user} -h${db_host} -p${db_password} ${db_database}
     read -e web_domain web_status <<<$(mysql -u${db_user} -h${db_host} -p${db_password} ${db_database} -N -e "SELECT web_domain, web_status FROM web WHERE web_id='${id_website}'")
     if [ ${web_status} -ne 0 ]; then
-        web_status="False"
-    else
         web_status="True"
+    else
+        web_status="False"
     fi
     good_text "Your are updated the website ${web_domain} to ${web_status}"
-}
-
-# Disabled Website
-function status_website() {
-    # coming_soon "$@"
-    # sleep 2
-    list_id_website "$@"
     mgt_website "$@"
 }
 
@@ -149,7 +142,7 @@ function update_server() {
     mgt_server "$@"
 }
 
-# Disabled Server
+# Switch Status Server
 function status_server() {
     coming_soon "$@"
     sleep 2

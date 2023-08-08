@@ -3,7 +3,7 @@
 # Author : DJERBI Florian
 # Object : Management a website with zabbix discovery
 # Creation Date : 08/02/2023
-# Modification Date : 08/02/2023
+# Modification Date : 08/08/2023
 ###########################
 
 #
@@ -21,7 +21,7 @@ PATH=/usr/sbin:/usr/bin:/sbin:/bin
 db_database="zabbix_web"  # Edit if needed
 db_host="localhost"  # Edit if needed
 db_user="zabbix_web"  # Edit if needed
-db_password=""  # Your password
+db_password=""  # Insert your password
 
 # Others
 log_file=""
