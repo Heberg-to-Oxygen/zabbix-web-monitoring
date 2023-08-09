@@ -3,7 +3,7 @@
 # Author : DJERBI Florian
 # Object : Management a website with zabbix discovery
 # Creation Date : 07/28/2023
-# Modification Date : 08/08/2023
+# Modification Date : 08/09/2023
 ###########################
 
 #
@@ -16,7 +16,7 @@ source variable
 # FUNCTIONS
 #
 
-# Coming Soon
+# Coming soon
 function coming_soon(){
     printf "\n${_blue}Feature coming soon !${_reset}\n"
 }
@@ -27,22 +27,18 @@ function error_choice(){
     $1 "$@"
 }
 
+# Good text
 function good_text(){
     printf "\n${_green}${1}${_reset}\n"
 }
 
 # Add Website
 function add_website() {
-   echo -n "Site Domaine : "
-   read domain
-   echo -n "Site URL : "
-   read url
-   echo -n "Site Serveur : "
-   read server
-   echo -n "Environment (prod;pp;dev) : "
-   read env
-   echo -n "Infra Support (24/7;hours working) : "
-   read support
+   read -p "Site Domaine : " domain
+   read -p "Site URL : " url
+   read -p "Site Serveur : " server
+   read -p "Environment (prod;pp;dev) : " env
+   read -p "Infra Support (24/7;hours working) : " support
    created=$(date "+%Y-%m-%d %T")
    echo "INSERT INTO web (web_domain, web_url, web_server, web_env, web_support, web_created) VALUES ('${domain}', '${url}', '${server}', '${env}', '${support}', '${created}');" | mysql -u${db_user} -h${db_host} -p${db_password} ${db_database}
     good_text "You added website with this informations : ${domain}, ${url}, ${server}, ${env}, ${support}"
@@ -63,8 +59,7 @@ function status_website() {
     do
         printf "  - ${id} : ${server} (${status}):\n"
     done < <(mysql -u${db_user} -h${db_host} -p${db_password} ${db_database} -N -e "SELECT web_id, web_domain, web_status FROM web")
-    echo -n "Pleace choose your id website : "
-    read id_website
+    read -p "Pleace choose your id website : " id_website
     echo "UPDATE web SET web_status = !web_status WHERE web_id=${id_website}" | mysql -u${db_user} -h${db_host} -p${db_password} ${db_database}
     read -e web_domain web_status <<<$(mysql -u${db_user} -h${db_host} -p${db_password} ${db_database} -N -e "SELECT web_domain, web_status FROM web WHERE web_id='${id_website}'")
     if [ ${web_status} -ne 0 ]; then
@@ -127,6 +122,7 @@ case $choice in
 	;;
 esac
 }
+
 
 # Add Server
 function add_server() {
