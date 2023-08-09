@@ -10,9 +10,9 @@
 ### Website
 This script allors to Add, Update, Enable/Disable and list websites zabbix monitoring.
 He allows to have alerts for:
-    - unavailability of the website
-    - TLS certificate expiry
-    - domaine name expiry
+- unavailability of the website
+- TLS certificate expiry
+- domaine name expiry
 
 ### Server
 This script allors to Add, Update, Enable/Disable and list servers zabbix monitoring.
