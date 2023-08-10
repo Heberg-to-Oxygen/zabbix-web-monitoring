@@ -3,7 +3,7 @@
 # Author : DJERBI Florian
 # Object : Management a website with zabbix discovery
 # Creation Date : 07/28/2023
-# Modification Date : 08/09/2023
+# Modification Date : 08/10/2023
 ###########################
 
 #
@@ -40,7 +40,7 @@ function add_website() {
    read -p "Environment (prod;pp;dev) : " env
    read -p "Infra Support (24/7;hours working) : " support
    created=$(date "+%Y-%m-%d %T")
-   echo "INSERT INTO web (web_domain, web_url, web_server, web_env, web_support, web_created) VALUES ('${domain}', '${url}', '${server}', '${env}', '${support}', '${created}');" | mysql -u${db_user} -h${db_host} -p${db_password} ${db_database}
+   echo "INSERT INTO web (web_domain, web_url, web_server, web_env, web_support, web_created) VALUES ('${domain}', '${url}', '${server}', '${env}', '${support}', '${created}');" | mysql -u${db_user} -h${db_host} -P${db_port} -p${db_password} ${db_database}
     good_text "You added website with this informations : ${domain}, ${url}, ${server}, ${env}, ${support}"
     mgt_website "$@"
 }
@@ -58,10 +58,10 @@ function status_website() {
     while read id server status
     do
         printf "  - ${id} : ${server} (${status}):\n"
-    done < <(mysql -u${db_user} -h${db_host} -p${db_password} ${db_database} -N -e "SELECT web_id, web_domain, web_status FROM web")
+    done < <(mysql -u${db_user} -h${db_host} -P${db_port} -p${db_password} ${db_database} -N -e "SELECT web_id, web_domain, web_status FROM web")
     read -p "Pleace choose your id website : " id_website
     echo "UPDATE web SET web_status = !web_status WHERE web_id=${id_website}" | mysql -u${db_user} -h${db_host} -p${db_password} ${db_database}
-    read -e web_domain web_status <<<$(mysql -u${db_user} -h${db_host} -p${db_password} ${db_database} -N -e "SELECT web_domain, web_status FROM web WHERE web_id='${id_website}'")
+    read -e web_domain web_status <<<$(mysql -u${db_user} -h${db_host} -P${db_port} -p${db_password} ${db_database} -N -e "SELECT web_domain, web_status FROM web WHERE web_id='${id_website}'")
     if [ ${web_status} -ne 0 ]; then
         web_status="True"
     else
@@ -81,7 +81,7 @@ function list_website() {
         do
             echo "    - $item"
         done <<<$domain
-    done < <(mysql -u${db_user} -h${db_host} -p${db_password} ${db_database} -N -e "SELECT GROUP_CONCAT(web_domain SEPARATOR ','), web_server FROM web GROUP BY web_server")
+    done < <(mysql -u${db_user} -h${db_host} -P${db_port} -p${db_password} ${db_database} -N -e "SELECT GROUP_CONCAT(web_domain SEPARATOR ','), web_server FROM web GROUP BY web_server")
     mgt_website "$@"
 }
 
