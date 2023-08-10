@@ -27,6 +27,13 @@ function error_choice(){
     $1 "$@"
 }
 
+# Exit
+function exit_cli(){
+    printf "\n${_blue}Thanks you for use this script :)${_reset}\n\n"
+    sleep 1
+    exit
+}
+
 # Error text
 function error_text(){
     printf "\n${_red}${1}${_reset}\n"
@@ -55,9 +62,53 @@ function add_website() {
 
 # Update Website
 function update_website() {
-    coming_soon "$@"
-    sleep 2
-    mgt_website "$@"
+    cat <<EOF
+
+  1 - Domain website
+  2 - URL website
+  3 - Env website
+  4 - Support website
+  5 - Server website
+  9 - Back
+  0 - Exit
+EOF
+    read -p "Pleace choose your action : " choice
+case $choice in
+    1)
+        coming_soon "$@"
+        sleep 2
+        update_website "$@"
+        ;;
+    2)
+        coming_soon "$@"
+        sleep 2
+        update_website "$@"
+        ;;
+    3)
+        coming_soon "$@"
+        sleep 2
+        update_website "$@"
+        ;;
+    4)
+        coming_soon "$@"
+        sleep 2
+        update_website "$@"
+	;;
+    5)
+        coming_soon "$@"
+        sleep 2
+        update_website "$@"
+	;;
+    9)
+        mgt_website "$@"
+        ;;
+    0)
+        exit_cli "$@"
+	;;
+    *)
+        error_choice "update_website"
+	;;
+esac
 }
 
 # Switch Status Website
@@ -130,7 +181,7 @@ case $choice in
         main "$@"
 	;;
     0)
-        exit
+        exit_cli "$@"
         ;;
     *)
         error_choice "mgt_website"
@@ -196,7 +247,7 @@ case $choice in
         main "$@"
 	;;
     0)
-        exit
+        exit_cli "$@"
         ;;
     *)
         error_choice "mgt_server"
@@ -221,7 +272,7 @@ case $choice in
         mgt_server "$@"
         ;;
     0)
-        exit
+        exit_cli "$@"
         ;;
     *)
         error_choice "main"
