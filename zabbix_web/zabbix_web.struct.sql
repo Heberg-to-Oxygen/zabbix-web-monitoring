@@ -34,7 +34,6 @@ CREATE TABLE `web` (
   `web_id` int(11) NOT NULL AUTO_INCREMENT,
   `web_domain` varchar(255) NOT NULL,
   `web_url` varchar(255) NOT NULL,
-  `web_php_version` varchar(16) DEFAULT NULL,
   `web_env` varchar(16) NOT NULL,
   `web_support` varchar(40) NOT NULL,
   `web_status` BOOLEAN DEFAULT 1,
