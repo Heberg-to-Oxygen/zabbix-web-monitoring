@@ -22,7 +22,7 @@ CREATE TABLE `server` (
   `server_name` varchar(255) NOT NULL,
   `server_support` varchar(40) DEFAULT NULL,
   PRIMARY KEY (`server_id`),
-  UNIQUE KEY `server_name` (`server_name`),
+  UNIQUE KEY `server_name` (`server_name`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 
