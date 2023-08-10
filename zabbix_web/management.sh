@@ -80,7 +80,7 @@ function status_website() {
         fi
         good_text "Your are updated the website ${web_domain} to ${web_status}"
     else
-        error_text "Error ${id_webiste} is not a valid value!"
+        error_text "Error ${id_website} is not a valid value!"
     fi
     mgt_website "$@"
 }
