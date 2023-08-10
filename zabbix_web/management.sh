@@ -70,8 +70,8 @@ function status_website() {
         printf "  - ${id} : ${server} (${status}):\n"
     done < <(mysql -u${db_user} -h${db_host} -P${db_port} -p${db_password} ${db_database} -N -e "SELECT web_id, web_domain, web_status FROM web")
     read -p "Pleace choose your id website : " id_website
-    if [ -n "`echo ${id_website_list} | xargs -n1 echo | grep -e \"^${id_website}$\" ]; then
-        echo "UPDATE web SET web_status = !web_status WHERE web_id=${id_website}" | mysql -u${db_user} -h${db_host} -p${db_password} ${db_database}
+    if echo "${id_website_list[@]}" | grep -qw "${id_website}"; then
+    echo "UPDATE web SET web_status = !web_status WHERE web_id=${id_website}" | mysql -u${db_user} -h${db_host} -p${db_password} ${db_database}
         read -e web_domain web_status <<<$(mysql -u${db_user} -h${db_host} -P${db_port} -p${db_password} ${db_database} -N -e "SELECT web_domain, web_status FROM web WHERE web_id='${id_website}'")
         if [ ${web_status} -ne 0 ]; then
             web_status="True"
