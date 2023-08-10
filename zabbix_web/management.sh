@@ -27,6 +27,10 @@ function error_choice(){
     $1 "$@"
 }
 
+# Error text
+function error_text(){
+    printf "\n${_red}${1}${_reset}\n"
+}
 # Good text
 function good_text(){
     printf "\n${_green}${1}${_reset}\n"
@@ -34,14 +38,18 @@ function good_text(){
 
 # Add Website
 function add_website() {
-   read -p "Site Domaine : " domain
-   read -p "Site URL : " url
-   read -p "Site Serveur : " server
-   read -p "Environment (prod;pp;dev) : " env
-   read -p "Infra Support (24/7;hours working) : " support
-   created=$(date "+%Y-%m-%d %T")
-   echo "INSERT INTO web (web_domain, web_url, web_server, web_env, web_support, web_created) VALUES ('${domain}', '${url}', '${server}', '${env}', '${support}', '${created}');" | mysql -u${db_user} -h${db_host} -P${db_port} -p${db_password} ${db_database}
-    good_text "You added website with this informations : ${domain}, ${url}, ${server}, ${env}, ${support}"
+    read -p "Site Domaine : " domain
+    read -p "Site URL : " url
+    read -p "Site Serveur : " server
+    read -p "Environment (prod;pp;dev) : " env
+    read -p "Infra Support (24/7;hours working) : " support
+    if [ -n "${domain}" ] && [ -n ${url} ] && [ -n ${server} ] && [ -n ${env} ] && [ -n ${support} ]; then
+       created=$(date "+%Y-%m-%d %T")
+       echo "INSERT INTO web (web_domain, web_url, web_server, web_env, web_support, web_created) VALUES ('${domain}', '${url}', '${server}', '${env}', '${support}', '${created}');" | mysql -u${db_user} -h${db_host} -P${db_port} -p${db_password} ${db_database}
+        good_text "You added website with this informations : ${domain}, ${url}, ${server}, ${env}, ${support}"
+    else
+        error_text "You have an empty variable please fill all informations !"
+    fi
     mgt_website "$@"
 }
 
@@ -54,20 +62,26 @@ function update_website() {
 
 # Switch Status Website
 function status_website() {
+    id_website_list=()
     echo ""
     while read id server status
     do
+        id_website_list+=${id}
         printf "  - ${id} : ${server} (${status}):\n"
     done < <(mysql -u${db_user} -h${db_host} -P${db_port} -p${db_password} ${db_database} -N -e "SELECT web_id, web_domain, web_status FROM web")
     read -p "Pleace choose your id website : " id_website
-    echo "UPDATE web SET web_status = !web_status WHERE web_id=${id_website}" | mysql -u${db_user} -h${db_host} -p${db_password} ${db_database}
-    read -e web_domain web_status <<<$(mysql -u${db_user} -h${db_host} -P${db_port} -p${db_password} ${db_database} -N -e "SELECT web_domain, web_status FROM web WHERE web_id='${id_website}'")
-    if [ ${web_status} -ne 0 ]; then
-        web_status="True"
+    if [ -n "`echo ${id_website_list} | xargs -n1 echo | grep -e \"^${id_website}$\" ]; then
+        echo "UPDATE web SET web_status = !web_status WHERE web_id=${id_website}" | mysql -u${db_user} -h${db_host} -p${db_password} ${db_database}
+        read -e web_domain web_status <<<$(mysql -u${db_user} -h${db_host} -P${db_port} -p${db_password} ${db_database} -N -e "SELECT web_domain, web_status FROM web WHERE web_id='${id_website}'")
+        if [ ${web_status} -ne 0 ]; then
+            web_status="True"
+        else
+            web_status="False"
+        fi
+        good_text "Your are updated the website ${web_domain} to ${web_status}"
     else
-        web_status="False"
+        error_text "Error !"
     fi
-    good_text "Your are updated the website ${web_domain} to ${web_status}"
     mgt_website "$@"
 }
 
