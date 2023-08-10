@@ -45,7 +45,7 @@ function add_website() {
     read -p "Infra Support (24/7;hours working) : " support
     if [ -n "${domain}" ] && [ -n ${url} ] && [ -n ${server} ] && [ -n ${env} ] && [ -n ${support} ]; then
        created=$(date "+%Y-%m-%d %T")
-       echo "INSERT INTO web (web_domain, web_url, web_server, web_env, web_support, web_created) VALUES ('${domain}', '${url}', '${server}', '${env}', '${support}', '${created}');" | mysql -u${db_user} -h${db_host} -P${db_port} -p${db_password} ${db_database}
+       echo "INSERT INTO web (web_domain, web_url, web_server, web_env, web_support, web_created, web_updated) VALUES ('${domain}', '${url}', '${server}', '${env}', '${support}', '${created}', '${created}');" | mysql -u${db_user} -h${db_host} -P${db_port} -p${db_password} ${db_database}
         good_text "You added website with this informations : ${domain}, ${url}, ${server}, ${env}, ${support}"
     else
         error_text "You have an empty variable please fill all informations !"
@@ -71,7 +71,8 @@ function status_website() {
     done < <(mysql -u${db_user} -h${db_host} -P${db_port} -p${db_password} ${db_database} -N -e "SELECT web_id, web_domain, web_status FROM web")
     read -p "Pleace choose your id website : " id_website
     if echo "${id_website_list[@]}" | grep -qw "${id_website}"; then
-    echo "UPDATE web SET web_status = !web_status WHERE web_id=${id_website}" | mysql -u${db_user} -h${db_host} -p${db_password} ${db_database}
+        datetime=$(date "+%Y-%m-%d %T")
+        echo "UPDATE web SET web_status = !web_status, web_updated = ${datetime} WHERE web_id=${id_website}" | mysql -u${db_user} -h${db_host} -p${db_password} ${db_database}
         read -e web_domain web_status <<<$(mysql -u${db_user} -h${db_host} -P${db_port} -p${db_password} ${db_database} -N -e "SELECT web_domain, web_status FROM web WHERE web_id='${id_website}'")
         if [ ${web_status} -ne 0 ]; then
             web_status="True"
