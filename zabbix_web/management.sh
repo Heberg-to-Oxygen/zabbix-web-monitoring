@@ -72,7 +72,7 @@ function status_website() {
     read -p "Pleace choose your id website : " id_website
     if echo "${id_website_list[@]}" | grep -qw "${id_website}"; then
         datetime=$(date "+%Y-%m-%d %T")
-        echo "UPDATE web SET web_status = !web_status, web_updated = ${datetime} WHERE web_id=${id_website}" | mysql -u${db_user} -h${db_host} -p${db_password} ${db_database}
+        echo "UPDATE web SET web_status = !web_status, web_updated = '${datetime}' WHERE web_id=${id_website}" | mysql -u${db_user} -h${db_host} -p${db_password} ${db_database}
         read -e web_domain web_status <<<$(mysql -u${db_user} -h${db_host} -P${db_port} -p${db_password} ${db_database} -N -e "SELECT web_domain, web_status FROM web WHERE web_id='${id_website}'")
         if [ ${web_status} -ne 0 ]; then
             web_status="True"
