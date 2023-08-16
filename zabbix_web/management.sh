@@ -3,7 +3,7 @@
 # Author : DJERBI Florian
 # Object : Management a website with zabbix discovery
 # Creation Date : 07/28/2023
-# Modification Date : 08/10/2023
+# Modification Date : 08/16/2023
 ###########################
 
 #
@@ -48,8 +48,10 @@ function add_website() {
     read -p "Site Domaine : " domain
     read -p "Site URL : " url
     read -p "Site Serveur : " server
-    read -p "Environment (prod;pp;dev) : " env
-    read -p "Infra Support (24/7;hours working) : " support
+    # read -p "Environment (prod;pp;dev) : " env
+    # read -p "Infra Support (24/7;hours working) : " support
+    choose_env_add_website "$@"
+    choose_support_add_website "$@"
     if [ -n "${domain}" ] && [ -n ${url} ] && [ -n ${server} ] && [ -n ${env} ] && [ -n ${support} ]; then
        created=$(date "+%Y-%m-%d %T")
        echo "INSERT INTO web (web_domain, web_url, web_server, web_env, web_support, web_created, web_updated) VALUES ('${domain}', '${url}', '${server}', '${env}', '${support}', '${created}', '${created}');" | mysql -u${db_user} -h${db_host} -P${db_port} -p${db_password} ${db_database}
@@ -58,6 +60,80 @@ function add_website() {
         error_text "You have an empty variable please fill all informations !"
     fi
     mgt_website "$@"
+}
+
+# Choose Env Add Website
+function choose_env_add_website(){
+    cat <<EOF
+
+  1 - Production
+  2 - Acceptance
+  3 - Approval
+  4 - Development
+  5 - Laboratory
+  9 - Other
+  0 - Cancel
+EOF
+    read -p "Pleace choose your environment: " env
+case $env in
+    1)
+        env="production"
+ 	;;
+    2)
+        env="acceptance"
+ 	;;
+    3)
+        env="approval"
+	;;
+    4)
+        env="development"
+	;;
+    5)
+        env="laboratory"
+	;;
+    9)
+        env="other"
+	;;
+    0)
+        mgt_website "$@"
+	;;
+    *)
+        error_choice "choose_env_add_website"
+	;;
+esac
+}
+
+# Choose Support Add Website
+function choose_support_add_website(){
+    cat <<EOF
+
+  1 - 24/7
+  2 - 24/5
+  3 - 8/18 7/7
+  4 - 8/18 5/7
+  0 - Cancel
+EOF
+    read -p "Pleace choose your environment: " env
+case $env in
+    1)
+        support="24/7"
+ 	;;
+    2)
+        support="24/5"
+ 	;;
+    3)
+        support="8/18 577"
+	;;
+    4)
+        support="8/18 5/7"
+	;;
+    0)
+        mgt_website "$@"
+	;;
+    *)
+        error_choice "choose_support_add_website"
+	;;
+esac
 }
 
 # Update Website
