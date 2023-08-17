@@ -3,7 +3,7 @@
 - Author : DJERBI Florian
 - Object : Monitoring a website on Zabbix 
 - Creation Date : 07/27/2023
-- Modification Date : 08/09/2023
+- Modification Date : 08/17/2023
 
 
 ## Management
@@ -64,3 +64,14 @@ cd ~/script-infra/zabbix_web
 mysql -u zabbix_web -p zabbix_web < zabbix_web.struct.sql
 ```
 
+### Script conf zabbix
+Edit and add a path directory in /etc/zabbix/zabbix_agent2.conf
+Create a folder, change owner and copy/paste the zabbix_web_sql.conf file.
+``` bash
+# root user
+echo "Include=./zabbix_agent2.d/plugins.d/zabbix_web/*.conf" >> /etc/zabbix/zabbix_agent2.conf
+mkdir -p /etc/zabbix/zabbix_agent2.d/plugins.d/zabbix_web
+chown zabbix:root /etc/zabbix/zabbix_agent2.d/plugins.d/zabbix_web
+su - zabbix_web
+cp ~/script-infra/zabbix_web/zabbix_web_sql.conf /etc/zabbix/zabbix_agent2.d/plugins.d/zabbix_web/zabbix_web_sql.conf
+```
