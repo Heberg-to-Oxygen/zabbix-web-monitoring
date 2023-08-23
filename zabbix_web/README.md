@@ -3,7 +3,7 @@
 - Author : DJERBI Florian
 - Object : Monitoring a website on Zabbix 
 - Creation Date : 07/27/2023
-- Modification Date : 08/18/2023
+- Modification Date : 08/23/2023
 
 
 ## Management
@@ -36,6 +36,22 @@ Edit the /etc/zabbix/zabbix_agent2.conf file with a correct IP zabbix server
 ### Database
 Install and configure sql service:
   - [Mariadb](https://www.digitalocean.com/community/tutorials/how-to-install-mariadb-on-debian-11)
+
+Edit a /etc/mysql/mariadb.conf.d/50-server.cnf file, open mariadb service to the world
+``` conf
+# bind-address            = 127.0.0.1
+bind-address            = 0.0.0.0
+```
+Restart the service
+``` bash
+systemctl restart mariadb.service
+```
+
+After it is opened, add iptables rules
+``` conf
+iptables -A INPUT -p tcp -s Zabbix-IP --sport 1024:65535 -d Server-IP --dport 3306 -m state --state NEW,ESTABLISHED -j ACCEPT
+iptables -A OUTPUT -p tcp -s Server-IP --sport 3306 -d Zabbix-IP --dport 1024:65535 -m state --state ESTABLISHED -j ACCEPT
+```
 
 
 ## Install
