@@ -193,9 +193,10 @@ function status_website() {
     echo ""
     while read id server status
     do
-        id_website_list+=${id}
-        printf "  - ${id} : ${server} (${status}):\n"
+        id_website_list+="${id} "
+        printf "  ${id} - ${server} (${status})\n"
     done < <(mysql -u${db_user} -h${db_host} -P${db_port} -p${db_password} ${db_database} -N -e "SELECT web_id, web_domain, web_status FROM web")
+    echo "  0 - Exit"
     read -p "Pleace choose your id website : " id_website
     if echo "${id_website_list[@]}" | grep -qw "${id_website}"; then
         datetime=$(date "+%Y-%m-%d %T")
