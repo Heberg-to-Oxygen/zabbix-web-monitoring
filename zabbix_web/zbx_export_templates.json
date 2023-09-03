@@ -1,0 +1,103 @@
+{
+    "zabbix_export": {
+        "version": "6.0",
+        "date": "2023-09-03T08:10:56Z",
+        "groups": [
+            {
+                "uuid": "d70e8a214c754a3d9b8e9940eaad65c9",
+                "name": "Templates/Hedras Herberg"
+            }
+        ],
+        "templates": [
+            {
+                "uuid": "1a102bc353df453c92233eca9aa461ed",
+                "template": "Template - Hedras Herberg - Website",
+                "name": "Template - Hedras Herberg - Website",
+                "groups": [
+                    {
+                        "name": "Templates/Hedras Herberg"
+                    }
+                ],
+                "items": [
+                    {
+                        "uuid": "a9726f4b0f1142fdab64b66b3082901f",
+                        "name": "HH - Number of Website",
+                        "key": "WEBSITE.COUNT[{$DB_DATABASE}, {$DB_HOST}, {$DB_PORT}, {$DB_USER}, {$DB_PASSWORD}]",
+                        "delay": "10m",
+                        "triggers": [
+                            {
+                                "uuid": "ebc077c1bb274d4588f02d0208f6e301",
+                                "expression": "change(/Template - Hedras Herberg - Website/WEBSITE.COUNT[{$DB_DATABASE}, {$DB_HOST}, {$DB_PORT}, {$DB_USER}, {$DB_PASSWORD}])<>0",
+                                "name": "HH - Number of Website Updating to {ITEM.LASTVALUE1}",
+                                "priority": "INFO"
+                            }
+                        ]
+                    }
+                ],
+                "discovery_rules": [
+                    {
+                        "uuid": "deb13d9633714c759645af23378cec3a",
+                        "name": "HH - Website List Domain",
+                        "key": "WEBSITE.LIST[{$DB_DATABASE}, {$DB_HOST}, {$DB_PORT}, {$DB_USER}, {$DB_PASSWORD}]",
+                        "item_prototypes": [
+                            {
+                                "uuid": "ac003f90bb9c44e39db6d0b7f17fe1a1",
+                                "name": "HH - Check DOMAIN : {#DOMAIN}",
+                                "key": "WEBSITE.DOMAIN[{#DOMAIN}]",
+                                "delay": "1d",
+                                "trends": "0",
+                                "value_type": "CHAR"
+                            },
+                            {
+                                "uuid": "69f5280667694284bcbb41808643a7a5",
+                                "name": "HH - Check SSL : {#DOMAIN}",
+                                "key": "WEBSITE.SSL[{#DOMAIN}]",
+                                "delay": "1d",
+                                "trends": "0",
+                                "value_type": "CHAR"
+                            }
+                        ],
+                        "lld_macro_paths": [
+                            {
+                                "lld_macro": "{#DOMAIN}",
+                                "path": "$.Domain"
+                            }
+                        ]
+                    }
+                ],
+                "tags": [
+                    {
+                        "tag": "service",
+                        "value": "website"
+                    },
+                    {
+                        "tag": "template",
+                        "value": "HH"
+                    }
+                ],
+                "macros": [
+                    {
+                        "macro": "{$DB_DATABASE}",
+                        "value": "zabbix_web"
+                    },
+                    {
+                        "macro": "{$DB_HOST}",
+                        "value": "localhost"
+                    },
+                    {
+                        "macro": "{$DB_PASSWORD}",
+                        "type": "SECRET_TEXT"
+                    },
+                    {
+                        "macro": "{$DB_PORT}",
+                        "value": "3306"
+                    },
+                    {
+                        "macro": "{$DB_USER}",
+                        "value": "zabbix_web"
+                    }
+                ]
+            }
+        ]
+    }
+}
