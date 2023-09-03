@@ -3,7 +3,7 @@
 - Author : DJERBI Florian
 - Object : Monitoring a website on Zabbix 
 - Creation Date : 07/27/2023
-- Modification Date : 08/30/2023
+- Modification Date : 09/03/2023
 
 
 ## Management
@@ -90,5 +90,5 @@ mkdir -p /etc/zabbix/zabbix_agent2.d/plugins.d/zabbix_web
 chown zabbix_web:root /etc/zabbix/zabbix_agent2.d/plugins.d/zabbix_web
 su - zabbix_web
 cp ~/script-infra/zabbix_web/zabbix_web_sql.conf /etc/zabbix/zabbix_agent2.d/plugins.d/zabbix_web/zabbix_web_sql.conf
-cp -r ~/script-infra/zabbix_web/scripts /etc/zabbix/zabbix_agent2.d/plugins.d/zabbix_web/scripts
+cp -r ~/script-infra/zabbix_web/scripts /etc/zabbix/zabbix_agent2.d/plugins.d/zabbix_web/
 ```
