@@ -3,7 +3,7 @@
 - Author : DJERBI Florian
 - Object : Monitoring a website on Zabbix 
 - Creation Date : 07/27/2023
-- Modification Date : 09/03/2023
+- Modification Date : 09/04/2023
 
 
 ## Management
@@ -27,7 +27,7 @@ apt upgrade
 wget https://repo.zabbix.com/zabbix/5.0/debian/pool/main/z/zabbix-release/zabbix-release_5.0-2+debian11_all.deb
 dpkg -i zabbix-release_5.0-2+debian11_all.deb
 apt update
-apt install zabbix-agent2 git
+apt install zabbix-agent2 git whois
 systemctl restart zabbix-agent2
 systemctl enable zabbix-agent2
 ```
@@ -89,6 +89,6 @@ echo "Include=./zabbix_agent2.d/plugins.d/zabbix_web/*.conf" >> /etc/zabbix/zabb
 mkdir -p /etc/zabbix/zabbix_agent2.d/plugins.d/zabbix_web
 chown zabbix_web:root /etc/zabbix/zabbix_agent2.d/plugins.d/zabbix_web
 su - zabbix_web
-cp ~/script-infra/zabbix_web/zabbix_web_sql.conf /etc/zabbix/zabbix_agent2.d/plugins.d/zabbix_web/zabbix_web_sql.conf
+cp ~/script-infra/zabbix_web/zabbix_web.conf /etc/zabbix/zabbix_agent2.d/plugins.d/zabbix_web/zabbix_web.conf
 cp -r ~/script-infra/zabbix_web/scripts /etc/zabbix/zabbix_agent2.d/plugins.d/zabbix_web/
 ```
