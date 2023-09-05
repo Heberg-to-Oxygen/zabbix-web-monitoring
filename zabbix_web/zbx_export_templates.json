@@ -1,7 +1,7 @@
 {
     "zabbix_export": {
         "version": "6.0",
-        "date": "2023-09-03T08:10:56Z",
+        "date": "2023-09-05T17:37:47Z",
         "groups": [
             {
                 "uuid": "d70e8a214c754a3d9b8e9940eaad65c9",
@@ -23,13 +23,33 @@
                         "uuid": "a9726f4b0f1142fdab64b66b3082901f",
                         "name": "HH - Number of Website",
                         "key": "WEBSITE.COUNT[{$DB_DATABASE}, {$DB_HOST}, {$DB_PORT}, {$DB_USER}, {$DB_PASSWORD}]",
-                        "delay": "10m",
+                        "delay": "{$INTERVAL_NUMBER}",
+                        "tags": [
+                            {
+                                "tag": "component",
+                                "value": "requests"
+                            },
+                            {
+                                "tag": "requests",
+                                "value": "number"
+                            }
+                        ],
                         "triggers": [
                             {
                                 "uuid": "ebc077c1bb274d4588f02d0208f6e301",
                                 "expression": "change(/Template - Hedras Herberg - Website/WEBSITE.COUNT[{$DB_DATABASE}, {$DB_HOST}, {$DB_PORT}, {$DB_USER}, {$DB_PASSWORD}])<>0",
                                 "name": "HH - Number of Website Updating to {ITEM.LASTVALUE1}",
-                                "priority": "INFO"
+                                "priority": "INFO",
+                                "tags": [
+                                    {
+                                        "tag": "information",
+                                        "value": "number"
+                                    },
+                                    {
+                                        "tag": "scope",
+                                        "value": "information"
+                                    }
+                                ]
                             }
                         ]
                     }
@@ -39,22 +59,102 @@
                         "uuid": "deb13d9633714c759645af23378cec3a",
                         "name": "HH - Website List Domain",
                         "key": "WEBSITE.LIST[{$DB_DATABASE}, {$DB_HOST}, {$DB_PORT}, {$DB_USER}, {$DB_PASSWORD}]",
+                        "delay": "{$INTERVAL_DISCOVERY}",
                         "item_prototypes": [
+                            {
+                                "uuid": "9562b26ea8bf45cfb58ef9ed35772721",
+                                "name": "HH - WebPage Status: {#DOMAIN}",
+                                "key": "web.page.get[https://www.{#DOMAIN}]",
+                                "delay": "{$INTERVAL_STATUS}",
+                                "trends": "0",
+                                "value_type": "TEXT",
+                                "tags": [
+                                    {
+                                        "tag": "component",
+                                        "value": "status"
+                                    },
+                                    {
+                                        "tag": "status",
+                                        "value": "website"
+                                    }
+                                ]
+                            },
+                            {
+                                "uuid": "640d4d89cae94e0c975984bda92f207c",
+                                "name": "HH - WebPage Perf: {#DOMAIN}",
+                                "key": "web.page.perf[https://www.{#DOMAIN}]",
+                                "delay": "{$INTERVAL_PERF}",
+                                "value_type": "FLOAT",
+                                "tags": [
+                                    {
+                                        "tag": "component",
+                                        "value": "performance"
+                                    },
+                                    {
+                                        "tag": "performance",
+                                        "value": "website"
+                                    }
+                                ]
+                            },
                             {
                                 "uuid": "ac003f90bb9c44e39db6d0b7f17fe1a1",
                                 "name": "HH - Check DOMAIN : {#DOMAIN}",
                                 "key": "WEBSITE.DOMAIN[{#DOMAIN}]",
-                                "delay": "1d",
+                                "delay": "{$INTERVAL_DOMAIN}",
                                 "trends": "0",
-                                "value_type": "CHAR"
+                                "value_type": "CHAR",
+                                "tags": [
+                                    {
+                                        "tag": "component",
+                                        "value": "check"
+                                    },
+                                    {
+                                        "tag": "component",
+                                        "value": "information"
+                                    },
+                                    {
+                                        "tag": "information",
+                                        "value": "domain"
+                                    }
+                                ]
                             },
                             {
                                 "uuid": "69f5280667694284bcbb41808643a7a5",
                                 "name": "HH - Check SSL : {#DOMAIN}",
                                 "key": "WEBSITE.SSL[{#DOMAIN}]",
-                                "delay": "1d",
+                                "delay": "{$INTERVAL_SSL}",
                                 "trends": "0",
-                                "value_type": "CHAR"
+                                "value_type": "CHAR",
+                                "tags": [
+                                    {
+                                        "tag": "component",
+                                        "value": "check"
+                                    },
+                                    {
+                                        "tag": "component",
+                                        "value": "information"
+                                    },
+                                    {
+                                        "tag": "information",
+                                        "value": "ssl"
+                                    }
+                                ]
+                            }
+                        ],
+                        "graph_prototypes": [
+                            {
+                                "uuid": "8e37d7b380384325be8c3378b12a0590",
+                                "name": "WebPage Perf {#DOMAIN}",
+                                "graph_items": [
+                                    {
+                                        "color": "0080FF",
+                                        "calc_fnc": "ALL",
+                                        "item": {
+                                            "host": "Template - Hedras Herberg - Website",
+                                            "key": "web.page.perf[https://www.{#DOMAIN}]"
+                                        }
+                                    }
+                                ]
                             }
                         ],
                         "lld_macro_paths": [
@@ -67,6 +167,10 @@
                 ],
                 "tags": [
                     {
+                        "tag": "class",
+                        "value": "software"
+                    },
+                    {
                         "tag": "service",
                         "value": "website"
                     },
@@ -78,23 +182,86 @@
                 "macros": [
                     {
                         "macro": "{$DB_DATABASE}",
-                        "value": "zabbix_web"
+                        "value": "zabbix_web",
+                        "description": "Name of database (default: zabbix_web)"
                     },
                     {
                         "macro": "{$DB_HOST}",
-                        "value": "localhost"
+                        "value": "localhost",
+                        "description": "Host of database (default: localhost)"
                     },
                     {
                         "macro": "{$DB_PASSWORD}",
-                        "type": "SECRET_TEXT"
+                        "type": "SECRET_TEXT",
+                        "description": "Password of database"
                     },
                     {
                         "macro": "{$DB_PORT}",
-                        "value": "3306"
+                        "value": "3306",
+                        "description": "Port of database (default: 3306)"
                     },
                     {
                         "macro": "{$DB_USER}",
-                        "value": "zabbix_web"
+                        "value": "zabbix_web",
+                        "description": "User of database (default: zabbix_web)"
+                    },
+                    {
+                        "macro": "{$INTERVAL_DISCOVERY}",
+                        "value": "30m",
+                        "description": "Interval for item \"Website List Domain\" in Discovery"
+                    },
+                    {
+                        "macro": "{$INTERVAL_DOMAIN}",
+                        "value": "1d",
+                        "description": "Interval for item \"Check DOMAIN \""
+                    },
+                    {
+                        "macro": "{$INTERVAL_NUMBER}",
+                        "value": "10m",
+                        "description": "Interval for item \"Number of website\""
+                    },
+                    {
+                        "macro": "{$INTERVAL_PERF}",
+                        "value": "1m",
+                        "description": "Interval for item \"WebPage Perf\""
+                    },
+                    {
+                        "macro": "{$INTERVAL_SSL}",
+                        "value": "1d",
+                        "description": "Interval for item \"Check SSL\""
+                    },
+                    {
+                        "macro": "{$INTERVAL_STATUS}",
+                        "value": "1m",
+                        "description": "Interval for item \"WebPage Status:\""
+                    }
+                ],
+                "dashboards": [
+                    {
+                        "uuid": "6969a140b40640609c200825c43c1c37",
+                        "name": "WebPage Perf",
+                        "pages": [
+                            {
+                                "widgets": [
+                                    {
+                                        "type": "GRAPH_PROTOTYPE",
+                                        "name": "WebPage Perf",
+                                        "width": "24",
+                                        "height": "5",
+                                        "fields": [
+                                            {
+                                                "type": "GRAPH_PROTOTYPE",
+                                                "name": "graphid",
+                                                "value": {
+                                                    "host": "Template - Hedras Herberg - Website",
+                                                    "name": "WebPage Perf {#DOMAIN}"
+                                                }
+                                            }
+                                        ]
+                                    }
+                                ]
+                            }
+                        ]
                     }
                 ]
             }
