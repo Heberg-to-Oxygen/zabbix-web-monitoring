@@ -3,7 +3,7 @@
 - Author : DJERBI Florian
 - Object : Monitoring a website on Zabbix 
 - Creation Date : 07/27/2023
-- Modification Date : 09/04/2023
+- Modification Date : 09/27/2023
 
 
 ## Management
@@ -55,7 +55,7 @@ iptables -A OUTPUT -p tcp -s Server-IP --sport 3306 -d Zabbix-IP --dport 1024:65
 
 
 ## Install
-Create a user zaabix_web for clone and management script
+Create a user zabbix_web for clone and management script
 ``` bash
 useradd -m -s /bin/bash -d /home/zabbix_web zabbix_web
 su - zabbix_web
@@ -66,11 +66,17 @@ cp variable.template variable  # Edit file with a real db informations
 ```
 
 ### Database
-Create a username with grant privilieges on database zabbix_web
-``` 
+Create a username with grant privilieges on database zabbix_web for script
+```
 CREATE DATABASE IF NOT EXISTS `zabbix_web`;
 CREATE USER 'zabbix_web'@'%' IDENTIFIED BY 'StrongPassword';
 GRANT SELECT, INSERT, UPDATE ON `zabbix_web`.* TO 'zabbix_web'@'%';
+```
+And an other user for zabbix web
+```
+CREATE DATABASE IF NOT EXISTS `zabbix_web_ro`;
+CREATE USER 'zabbix_web_ro'@'%' IDENTIFIED BY 'StrongPassword';
+GRANT SELECT ON `zabbix_web`.* TO 'zabbix_web_ro'@'%';
 ```
 
 Insert a sql structure file in database with a zaabix_web user
