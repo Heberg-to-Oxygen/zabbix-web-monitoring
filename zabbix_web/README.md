@@ -3,7 +3,7 @@
 - Author : DJERBI Florian
 - Object : Monitoring a website on Zabbix 
 - Creation Date : 07/27/2023
-- Modification Date : 09/27/2023
+- Modification Date : 10/19/2023
 
 
 ## Management
@@ -72,7 +72,7 @@ CREATE DATABASE IF NOT EXISTS `zabbix_web`;
 CREATE USER 'zabbix_web'@'%' IDENTIFIED BY 'StrongPassword';
 GRANT SELECT, INSERT, UPDATE ON `zabbix_web`.* TO 'zabbix_web'@'%';
 ```
-And an other user for zabbix web
+And an other user for zabbix web with grant select only (security)
 ```
 CREATE DATABASE IF NOT EXISTS `zabbix_web_ro`;
 CREATE USER 'zabbix_web_ro'@'%' IDENTIFIED BY 'StrongPassword';
