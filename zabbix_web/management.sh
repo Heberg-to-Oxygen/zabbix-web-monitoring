@@ -13,7 +13,7 @@ source variable
 
 
 #
-# FUNCTIONS
+# TEMPLATES FUNCTIONS
 #
 
 # Coming soon
@@ -50,30 +50,15 @@ function upper_to_lower(){
     echo $lower
 }
 
-# Choice domain in add website
-function choice_domain(){
-    read -p "Site Domaine : " domain
-    local domain=$(upper_to_lower "$domain")
-    if ! curl -s $domain >/dev/null; then
-      error_text "Domain $domain not exists ! Please retry"
-      choice_domain "$@"
-    fi
-}
 
-function choice_url(){
-    read -p "Site URL : " url
-    local url=$(upper_to_lower "$url")
-    url_code=$(curl --write-out "%{http_code}\n" --silent --output /dev/null "$url")
-    if ! [ $url_code -eq 200 ]; then
-        error_text "$url no return code 200 ! Retry plz"
-	choice_url "$@"
-    fi
-}
+#
+# FUNCTIONS
+#
 
 # Add Website
 function add_website() {
-    choice_domain "$@"
-    choice_url "$@"
+    choose_domain_add_website "$@"
+    choose_url_add_website "$@"
     read -p "Site Serveur : " server
     local server=$(upper_to_lower "$server")
     choose_env_add_website "$@"
@@ -89,7 +74,28 @@ function add_website() {
     mgt_website "$@"
 }
 
-# Choose Env Add Website
+## Choose domain in add website
+function choose_domain_add_website(){
+    read -p "Site Domaine : " domain
+    local domain=$(upper_to_lower "$domain")
+    if ! curl -s $domain >/dev/null; then
+      error_text "Domain $domain not exists ! Please retry"
+      choice_domain "$@"
+    fi
+}
+
+## Choose url in add website
+function choose_url_add_website(){
+    read -p "Site URL : " url
+    local url=$(upper_to_lower "$url")
+    url_code=$(curl --write-out "%{http_code}\n" --silent --output /dev/null "$url")
+    if ! [ $url_code -eq 200 ]; then
+        error_text "$url no return code 200 ! Retry plz"
+	choice_url "$@"
+    fi
+}
+
+## Choose Env Add Website
 function choose_env_add_website(){
     cat <<EOF
 
@@ -130,7 +136,7 @@ case $env in
 esac
 }
 
-# Choose Support Add Website
+## Choose Support Add Website
 function choose_support_add_website(){
     cat <<EOF
 
@@ -170,6 +176,7 @@ case $support in
 	;;
 esac
 }
+
 
 # Update Website
 function update_website() {
