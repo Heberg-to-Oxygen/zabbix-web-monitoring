@@ -3,7 +3,7 @@
 # Author : DJERBI Florian
 # Object : Management a website with zabbix discovery
 # Creation Date : 07/28/2023
-# Modification Date : 08/16/2023
+# Modification Date : 10/22/2023
 ###########################
 
 #
@@ -43,11 +43,20 @@ function good_text(){
     printf "\n${_green}${1}${_reset}\n"
 }
 
+# Uppercase to Lowercase
+function upper_to_lower(){
+    lower=$(echo "$1" | awk '{print tolower($0)}')
+    echo $lower
+}
+
 # Add Website
 function add_website() {
     read -p "Site Domaine : " domain
+    local domain=$(upper_to_lower "$domain")
     read -p "Site URL : " url
+    local url=$(upper_to_lower "$url")
     read -p "Site Serveur : " server
+    local server=$(upper_to_lower "$server")
     # read -p "Environment (prod;pp;dev) : " env
     # read -p "Infra Support (24/7;hours working) : " support
     choose_env_add_website "$@"
