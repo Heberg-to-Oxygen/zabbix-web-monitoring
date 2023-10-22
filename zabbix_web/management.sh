@@ -27,6 +27,11 @@ function error_choice(){
     $1 "$@"
 }
 
+# Error text
+function error_text(){
+    printf "${_red}${1}${_reset}\n"
+}
+
 # Exit
 function exit_cli(){
     printf "\n${_blue}Thanks you for use this script :)${_reset}\n\n"
@@ -34,10 +39,6 @@ function exit_cli(){
     exit
 }
 
-# Error text
-function error_text(){
-    printf "\n${_red}${1}${_reset}\n"
-}
 # Good text
 function good_text(){
     printf "\n${_green}${1}${_reset}\n"
@@ -49,18 +50,35 @@ function upper_to_lower(){
     echo $lower
 }
 
-# Add Website
-function add_website() {
+# Choice domain in add website
+function choice_domain(){
     read -p "Site Domaine : " domain
     local domain=$(upper_to_lower "$domain")
+    if ! curl -s $domain >/dev/null; then
+      error_text "Domain $domain not exists ! Please retry"
+      choice_domain "$@"
+    fi
+}
+
+function choice_url(){
     read -p "Site URL : " url
     local url=$(upper_to_lower "$url")
+    url_code=$(curl --write-out "%{http_code}\n" --silent --output /dev/null "$url")
+    if ! [ $url_code -eq 200 ]; then
+        error_text "$url no return code 200 ! Retry plz"
+	choice_url "$@"
+    fi
+}
+
+# Add Website
+function add_website() {
+    choice_domain "$@"
+    choice_url "$@"
     read -p "Site Serveur : " server
     local server=$(upper_to_lower "$server")
-    # read -p "Environment (prod;pp;dev) : " env
-    # read -p "Infra Support (24/7;hours working) : " support
     choose_env_add_website "$@"
     choose_support_add_website "$@"
+
     if [ -n "${domain}" ] && [ -n "${url}" ] && [ -n "${server}" ] && [ -n "${env}" ] && [ -n "${support}" ]; then
        created=$(date "+%Y-%m-%d %T")
        echo "INSERT INTO web (web_domain, web_url, web_server, web_env, web_support, web_created, web_updated) VALUES ('${domain}', '${url}', '${server}', '${env}', '${support}', '${created}', '${created}');" | mysql -u${db_user} -h${db_host} -P${db_port} -p${db_password} ${db_database}
