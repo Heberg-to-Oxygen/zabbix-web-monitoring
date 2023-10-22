@@ -61,7 +61,7 @@ function add_website() {
     # read -p "Infra Support (24/7;hours working) : " support
     choose_env_add_website "$@"
     choose_support_add_website "$@"
-    if [ -n "${domain}" ] && [ -n ${url} ] && [ -n ${server} ] && [ -n ${env} ] && [ -n ${support} ]; then
+    if [ -n "${domain}" ] && [ -n "${url}" ] && [ -n "${server}" ] && [ -n "${env}" ] && [ -n "${support}" ]; then
        created=$(date "+%Y-%m-%d %T")
        echo "INSERT INTO web (web_domain, web_url, web_server, web_env, web_support, web_created, web_updated) VALUES ('${domain}', '${url}', '${server}', '${env}', '${support}', '${created}', '${created}');" | mysql -u${db_user} -h${db_host} -P${db_port} -p${db_password} ${db_database}
         good_text "You added website with this informations : ${domain}, ${url}, ${server}, ${env}, ${support}"
@@ -120,10 +120,12 @@ function choose_support_add_website(){
   2 - 24/5
   3 - 8/18 7/7
   4 - 8/18 5/7
+  5 - No support
+  9 - Other
   0 - Cancel
 EOF
-    read -p "Pleace choose your environment: " env
-case $env in
+    read -p "Pleace choose your environment: " support
+case $support in
     1)
         support="24/7"
  	;;
@@ -135,6 +137,12 @@ case $env in
 	;;
     4)
         support="8/18 5/7"
+	;;
+    5)
+	support="no support"
+	;;
+    9)
+	support="other"
 	;;
     0)
         mgt_website "$@"
