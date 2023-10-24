@@ -3,7 +3,7 @@
 # Author : DJERBI Florian
 # Object : Management a website with zabbix discovery
 # Creation Date : 07/28/2023
-# Modification Date : 10/22/2023
+# Modification Date : 10/24/2023
 ###########################
 
 #
@@ -238,7 +238,7 @@ function status_website() {
         id_website_list+="${id} "
         printf "  ${id} - ${server} (${status})\n"
     done < <(mysql -u${db_user} -h${db_host} -P${db_port} -p${db_password} ${db_database} -N -e "SELECT web_id, web_domain, web_status FROM web")
-    echo "  0 - Exit"
+    echo "  0 - Back"
     read -p "Pleace choose your id website : " id_website
     if echo "${id_website_list[@]}" | grep -qw "${id_website}"; then
         datetime=$(date "+%Y-%m-%d %T")
@@ -250,6 +250,8 @@ function status_website() {
             web_status="False"
         fi
         good_text "Your are updated the website ${web_domain} to ${web_status}"
+    elif [ ${id_website} -eq 0 ]; then
+        mgt_website "$@"
     else
         error_text "Error ${id_website} is not a valid value!"
     fi
