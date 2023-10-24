@@ -1,7 +1,7 @@
 {
     "zabbix_export": {
         "version": "6.0",
-        "date": "2023-09-05T17:37:47Z",
+        "date": "2023-10-24T15:22:30Z",
         "groups": [
             {
                 "uuid": "d70e8a214c754a3d9b8e9940eaad65c9",
@@ -42,12 +42,16 @@
                                 "priority": "INFO",
                                 "tags": [
                                     {
-                                        "tag": "information",
-                                        "value": "number"
+                                        "tag": "scope",
+                                        "value": "information"
                                     },
                                     {
                                         "tag": "scope",
-                                        "value": "information"
+                                        "value": "website"
+                                    },
+                                    {
+                                        "tag": "website",
+                                        "value": "number"
                                     }
                                 ]
                             }
@@ -62,24 +66,6 @@
                         "delay": "{$INTERVAL_DISCOVERY}",
                         "item_prototypes": [
                             {
-                                "uuid": "9562b26ea8bf45cfb58ef9ed35772721",
-                                "name": "HH - WebPage Status: {#DOMAIN}",
-                                "key": "web.page.get[https://www.{#DOMAIN}]",
-                                "delay": "{$INTERVAL_STATUS}",
-                                "trends": "0",
-                                "value_type": "TEXT",
-                                "tags": [
-                                    {
-                                        "tag": "component",
-                                        "value": "status"
-                                    },
-                                    {
-                                        "tag": "status",
-                                        "value": "website"
-                                    }
-                                ]
-                            },
-                            {
                                 "uuid": "640d4d89cae94e0c975984bda92f207c",
                                 "name": "HH - WebPage Perf: {#DOMAIN}",
                                 "key": "web.page.perf[https://www.{#DOMAIN}]",
@@ -93,6 +79,14 @@
                                     {
                                         "tag": "performance",
                                         "value": "website"
+                                    }
+                                ],
+                                "trigger_prototypes": [
+                                    {
+                                        "uuid": "2ba78359a296481ea66a39a4af6ad107",
+                                        "expression": "avg(/Template - Hedras Herberg - Website/web.page.perf[https://www.{#DOMAIN}],5)>3",
+                                        "name": "HH - WebPage Perf {#DOMAIN} (over 3 for 5m)",
+                                        "priority": "AVERAGE"
                                     }
                                 ]
                             },
@@ -116,7 +110,69 @@
                                         "tag": "information",
                                         "value": "domain"
                                     }
+                                ],
+                                "trigger_prototypes": [
+                                    {
+                                        "uuid": "05f1244b372d43a3a2c5032608c54dcc",
+                                        "expression": "last(/Template - Hedras Herberg - Website/WEBSITE.DOMAIN[{#DOMAIN}])<{$DAYS_DOMAIN_FIRST}",
+                                        "name": "HH - DOMAIN {#DOMAIN} expires in less than {ITEM.LASTVALUE1} days",
+                                        "priority": "AVERAGE",
+                                        "dependencies": [
+                                            {
+                                                "name": "HH - DOMAIN {#DOMAIN} expires in less than {ITEM.LASTVALUE1} days",
+                                                "expression": "last(/Template - Hedras Herberg - Website/WEBSITE.DOMAIN[{#DOMAIN}])<{$DAYS_DOMAIN_SECOND}"
+                                            }
+                                        ],
+                                        "tags": [
+                                            {
+                                                "tag": "component",
+                                                "value": "trigger"
+                                            },
+                                            {
+                                                "tag": "step",
+                                                "value": "first"
+                                            },
+                                            {
+                                                "tag": "trigger",
+                                                "value": "domain"
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        "uuid": "840889661ec1417fa147460db82a993e",
+                                        "expression": "last(/Template - Hedras Herberg - Website/WEBSITE.DOMAIN[{#DOMAIN}])<{$DAYS_DOMAIN_SECOND}",
+                                        "name": "HH - DOMAIN {#DOMAIN} expires in less than {ITEM.LASTVALUE1} days",
+                                        "priority": "HIGH",
+                                        "tags": [
+                                            {
+                                                "tag": "component",
+                                                "value": "trigger"
+                                            },
+                                            {
+                                                "tag": "step",
+                                                "value": "second"
+                                            },
+                                            {
+                                                "tag": "trigger",
+                                                "value": "domain"
+                                            }
+                                        ]
+                                    }
                                 ]
+                            },
+                            {
+                                "uuid": "f29787b25b6b493db92db7ad3059552d",
+                                "name": "HH - WebPage Host: {#DOMAIN}",
+                                "key": "WEBSITE.HOST[{#DOMAIN}]",
+                                "delay": "{$INTERVAL_HOST}",
+                                "trends": "0",
+                                "value_type": "TEXT"
+                            },
+                            {
+                                "uuid": "2e6fcc4b072c4bc9b55ba2475b8a9e95",
+                                "name": "HH - WebPage Code: {#URL}",
+                                "key": "WEBSITE.HTTPCODE[{#URL}]",
+                                "delay": "{$INTERVAL_HTTPCODE}"
                             },
                             {
                                 "uuid": "69f5280667694284bcbb41808643a7a5",
@@ -137,6 +193,54 @@
                                     {
                                         "tag": "information",
                                         "value": "ssl"
+                                    }
+                                ],
+                                "trigger_prototypes": [
+                                    {
+                                        "uuid": "b870627cd83647c48d2b94a471a9c29c",
+                                        "expression": "last(/Template - Hedras Herberg - Website/WEBSITE.SSL[{#DOMAIN}])<{$DAYS_SSL_FIRST}",
+                                        "name": "HH - SSL {#DOMAIN} expires in less than {ITEM.LASTVALUE1} days",
+                                        "priority": "AVERAGE",
+                                        "dependencies": [
+                                            {
+                                                "name": "HH - SSL {#DOMAIN} expires in less than {ITEM.LASTVALUE1} days",
+                                                "expression": "last(/Template - Hedras Herberg - Website/WEBSITE.SSL[{#DOMAIN}])<{$DAYS_SSL_SECOND}"
+                                            }
+                                        ],
+                                        "tags": [
+                                            {
+                                                "tag": "component",
+                                                "value": "trigger"
+                                            },
+                                            {
+                                                "tag": "step",
+                                                "value": "first"
+                                            },
+                                            {
+                                                "tag": "trigger",
+                                                "value": "ssl"
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        "uuid": "5bcde83e00624163a840e11bf8bf4ca9",
+                                        "expression": "last(/Template - Hedras Herberg - Website/WEBSITE.SSL[{#DOMAIN}])<{$DAYS_SSL_SECOND}",
+                                        "name": "HH - SSL {#DOMAIN} expires in less than {ITEM.LASTVALUE1} days",
+                                        "priority": "HIGH",
+                                        "tags": [
+                                            {
+                                                "tag": "component",
+                                                "value": "trigger"
+                                            },
+                                            {
+                                                "tag": "step",
+                                                "value": "second"
+                                            },
+                                            {
+                                                "tag": "trigger",
+                                                "value": "ssl"
+                                            }
+                                        ]
                                     }
                                 ]
                             }
@@ -161,6 +265,10 @@
                             {
                                 "lld_macro": "{#DOMAIN}",
                                 "path": "$.Domain"
+                            },
+                            {
+                                "lld_macro": "{#URL}",
+                                "path": "$.URL"
                             }
                         ]
                     }
@@ -181,13 +289,33 @@
                 ],
                 "macros": [
                     {
+                        "macro": "{$DAYS_DOMAIN_FIRST}",
+                        "value": "20",
+                        "description": "Number of days before first domain trigger (default: 20)"
+                    },
+                    {
+                        "macro": "{$DAYS_DOMAIN_SECOND}",
+                        "value": "4",
+                        "description": "Number of days before second domain trigger (default: 20)"
+                    },
+                    {
+                        "macro": "{$DAYS_SSL_FIRST}",
+                        "value": "20",
+                        "description": "Number of days before first ssl trigger (default: 20)"
+                    },
+                    {
+                        "macro": "{$DAYS_SSL_SECOND}",
+                        "value": "4",
+                        "description": "Number of days before second ssl trigger (default: 4)"
+                    },
+                    {
                         "macro": "{$DB_DATABASE}",
                         "value": "zabbix_web",
                         "description": "Name of database (default: zabbix_web)"
                     },
                     {
                         "macro": "{$DB_HOST}",
-                        "value": "localhost",
+                        "value": "57.128.82.134",
                         "description": "Host of database (default: localhost)"
                     },
                     {
@@ -216,6 +344,16 @@
                         "description": "Interval for item \"Check DOMAIN \""
                     },
                     {
+                        "macro": "{$INTERVAL_HOST}",
+                        "value": "1m",
+                        "description": "Interval for item \"WebPage  Host\""
+                    },
+                    {
+                        "macro": "{$INTERVAL_HTTPCODE}",
+                        "value": "1m",
+                        "description": "Interval for item \"WebPage Code:\""
+                    },
+                    {
                         "macro": "{$INTERVAL_NUMBER}",
                         "value": "10m",
                         "description": "Interval for item \"Number of website\""
@@ -229,11 +367,6 @@
                         "macro": "{$INTERVAL_SSL}",
                         "value": "1d",
                         "description": "Interval for item \"Check SSL\""
-                    },
-                    {
-                        "macro": "{$INTERVAL_STATUS}",
-                        "value": "1m",
-                        "description": "Interval for item \"WebPage Status:\""
                     }
                 ],
                 "dashboards": [
@@ -247,8 +380,13 @@
                                         "type": "GRAPH_PROTOTYPE",
                                         "name": "WebPage Perf",
                                         "width": "24",
-                                        "height": "5",
+                                        "height": "18",
                                         "fields": [
+                                            {
+                                                "type": "INTEGER",
+                                                "name": "rows",
+                                                "value": "4"
+                                            },
                                             {
                                                 "type": "GRAPH_PROTOTYPE",
                                                 "name": "graphid",
