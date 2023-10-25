@@ -3,7 +3,7 @@
 # Author : DJERBI Florian
 # Object : Management a server for website in a zabbix discovery
 # Creation Date : 10/24/2023
-# Modification Date : 10/24/2023
+# Modification Date : 10/25/2023
 ###########################
 
 #
@@ -191,7 +191,13 @@ function status_website() {
     while read id server status
     do
         id_website_list+="${id} "
-        printf "  ${id} - ${server} (${status})\n"
+	if [ ${status} -eq 0 ]; then
+            printf "  ${id} - "
+	    error_text "${server}"
+	else
+            printf "  ${id} - "
+            good_text "${server}"
+        fi
     done < <(mysql -u${db_user} -h${db_host} -P${db_port} -p${db_password} ${db_database} -N -e "SELECT web_id, web_domain, web_status FROM web")
     echo "  0 - Back"
     read -p "Pleace choose your id website : " id_website

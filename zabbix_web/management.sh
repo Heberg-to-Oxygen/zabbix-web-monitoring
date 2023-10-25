@@ -3,7 +3,7 @@
 # Author : DJERBI Florian
 # Object : Management a website with zabbix discovery
 # Creation Date : 07/28/2023
-# Modification Date : 10/24/2023
+# Modification Date : 10/25/2023
 ###########################
 
 #
@@ -33,16 +33,16 @@ function error_text(){
     printf "${_red}${1}${_reset}\n"
 }
 
+# Good text
+function good_text(){
+    printf "${_green}${1}${_reset}\n"
+}
+
 # Exit
 function exit_cli(){
     printf "\n${_blue}Thanks you for use this script :)${_reset}\n\n"
     sleep 1
     exit
-}
-
-# Good text
-function good_text(){
-    printf "\n${_green}${1}${_reset}\n"
 }
 
 # Uppercase to Lowercase
