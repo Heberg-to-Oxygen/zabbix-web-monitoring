@@ -103,7 +103,7 @@ function choose_support_add_website(){
   9 - Other
   0 - Cancel
 EOF
-    read -p "Pleace choose your environment: " support
+    read -p "Pleace choose your support: " support
 case $support in
     1)
         support="24/7"
