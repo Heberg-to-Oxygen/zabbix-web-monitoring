@@ -1,7 +1,7 @@
 {
     "zabbix_export": {
         "version": "6.0",
-        "date": "2023-10-24T15:22:30Z",
+        "date": "2023-11-01T20:14:45Z",
         "groups": [
             {
                 "uuid": "d70e8a214c754a3d9b8e9940eaad65c9",
@@ -64,29 +64,91 @@
                         "name": "HH - Website List Domain",
                         "key": "WEBSITE.LIST[{$DB_DATABASE}, {$DB_HOST}, {$DB_PORT}, {$DB_USER}, {$DB_PASSWORD}]",
                         "delay": "{$INTERVAL_DISCOVERY}",
+                        "lifetime": "{$KEEP_LOST}",
                         "item_prototypes": [
                             {
                                 "uuid": "640d4d89cae94e0c975984bda92f207c",
                                 "name": "HH - WebPage Perf: {#DOMAIN}",
-                                "key": "web.page.perf[https://www.{#DOMAIN}]",
+                                "key": "web.page.perf[{#URL}]",
                                 "delay": "{$INTERVAL_PERF}",
                                 "value_type": "FLOAT",
+                                "description": "Env :        {#ENV}\nSupport :  {#SUPPORT}\nServer :    {#SERVER}",
                                 "tags": [
                                     {
                                         "tag": "component",
                                         "value": "performance"
                                     },
                                     {
+                                        "tag": "env",
+                                        "value": "{#ENV}"
+                                    },
+                                    {
                                         "tag": "performance",
                                         "value": "website"
+                                    },
+                                    {
+                                        "tag": "support",
+                                        "value": "{#SUPPORT}"
                                     }
                                 ],
                                 "trigger_prototypes": [
                                     {
                                         "uuid": "2ba78359a296481ea66a39a4af6ad107",
-                                        "expression": "avg(/Template - Hedras Herberg - Website/web.page.perf[https://www.{#DOMAIN}],5)>3",
+                                        "expression": "avg(/Template - Hedras Herberg - Website/web.page.perf[{#URL}],3)>3",
+                                        "name": "HH - WebPage Perf {#DOMAIN} (over 3 for 3m)",
+                                        "url": "{#URL}",
+                                        "priority": "AVERAGE",
+                                        "description": "Env :        {#ENV}\nSupport :  {#SUPPORT}\nServer :    {#SERVER}",
+                                        "dependencies": [
+                                            {
+                                                "name": "HH - WebPage Perf {#DOMAIN} (over 3 for 5m)",
+                                                "expression": "avg(/Template - Hedras Herberg - Website/web.page.perf[{#URL}],5)>3"
+                                            }
+                                        ],
+                                        "tags": [
+                                            {
+                                                "tag": "component",
+                                                "value": "perf"
+                                            },
+                                            {
+                                                "tag": "env",
+                                                "value": "{#ENV}"
+                                            },
+                                            {
+                                                "tag": "perf",
+                                                "value": "website"
+                                            },
+                                            {
+                                                "tag": "support",
+                                                "value": "{#SUPPORT}"
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        "uuid": "309edf7db8254022bf2767da395b4ad7",
+                                        "expression": "avg(/Template - Hedras Herberg - Website/web.page.perf[{#URL}],5)>3",
                                         "name": "HH - WebPage Perf {#DOMAIN} (over 3 for 5m)",
-                                        "priority": "AVERAGE"
+                                        "url": "{#URL}",
+                                        "priority": "HIGH",
+                                        "description": "Env :        {#ENV}\nSupport :  {#SUPPORT}\nServer :    {#SERVER}",
+                                        "tags": [
+                                            {
+                                                "tag": "component",
+                                                "value": "perf"
+                                            },
+                                            {
+                                                "tag": "env",
+                                                "value": "{#ENV}"
+                                            },
+                                            {
+                                                "tag": "perf",
+                                                "value": "website"
+                                            },
+                                            {
+                                                "tag": "support",
+                                                "value": "{#SUPPORT}"
+                                            }
+                                        ]
                                     }
                                 ]
                             },
@@ -97,18 +159,23 @@
                                 "delay": "{$INTERVAL_DOMAIN}",
                                 "trends": "0",
                                 "value_type": "CHAR",
+                                "description": "Env :        {#ENV}\nSupport :  {#SUPPORT}\nServer :    {#SERVER}",
                                 "tags": [
-                                    {
-                                        "tag": "component",
-                                        "value": "check"
-                                    },
                                     {
                                         "tag": "component",
                                         "value": "information"
                                     },
                                     {
+                                        "tag": "env",
+                                        "value": "{#ENV}"
+                                    },
+                                    {
                                         "tag": "information",
                                         "value": "domain"
+                                    },
+                                    {
+                                        "tag": "support",
+                                        "value": "{#SUPPORT}"
                                     }
                                 ],
                                 "trigger_prototypes": [
@@ -116,7 +183,9 @@
                                         "uuid": "05f1244b372d43a3a2c5032608c54dcc",
                                         "expression": "last(/Template - Hedras Herberg - Website/WEBSITE.DOMAIN[{#DOMAIN}])<{$DAYS_DOMAIN_FIRST}",
                                         "name": "HH - DOMAIN {#DOMAIN} expires in less than {ITEM.LASTVALUE1} days",
+                                        "url": "{#URL}",
                                         "priority": "AVERAGE",
+                                        "description": "Env :        {#ENV}\nSupport :  {#SUPPORT}\nServer :    {#SERVER}",
                                         "dependencies": [
                                             {
                                                 "name": "HH - DOMAIN {#DOMAIN} expires in less than {ITEM.LASTVALUE1} days",
@@ -126,15 +195,19 @@
                                         "tags": [
                                             {
                                                 "tag": "component",
-                                                "value": "trigger"
+                                                "value": "domain"
+                                            },
+                                            {
+                                                "tag": "env",
+                                                "value": "{#ENV}"
                                             },
                                             {
                                                 "tag": "step",
                                                 "value": "first"
                                             },
                                             {
-                                                "tag": "trigger",
-                                                "value": "domain"
+                                                "tag": "support",
+                                                "value": "{#SUPPORT}"
                                             }
                                         ]
                                     },
@@ -142,19 +215,25 @@
                                         "uuid": "840889661ec1417fa147460db82a993e",
                                         "expression": "last(/Template - Hedras Herberg - Website/WEBSITE.DOMAIN[{#DOMAIN}])<{$DAYS_DOMAIN_SECOND}",
                                         "name": "HH - DOMAIN {#DOMAIN} expires in less than {ITEM.LASTVALUE1} days",
+                                        "url": "{#URL}",
                                         "priority": "HIGH",
+                                        "description": "Env :        {#ENV}\nSupport :  {#SUPPORT}\nServer :    {#SERVER}",
                                         "tags": [
                                             {
                                                 "tag": "component",
-                                                "value": "trigger"
+                                                "value": "domain"
+                                            },
+                                            {
+                                                "tag": "env",
+                                                "value": "{#ENV}"
                                             },
                                             {
                                                 "tag": "step",
                                                 "value": "second"
                                             },
                                             {
-                                                "tag": "trigger",
-                                                "value": "domain"
+                                                "tag": "support",
+                                                "value": "{#SUPPORT}"
                                             }
                                         ]
                                     }
@@ -166,13 +245,139 @@
                                 "key": "WEBSITE.HOST[{#DOMAIN}]",
                                 "delay": "{$INTERVAL_HOST}",
                                 "trends": "0",
-                                "value_type": "TEXT"
+                                "value_type": "TEXT",
+                                "description": "Env :        {#ENV}\nSupport :  {#SUPPORT}\nServer :    {#SERVER}",
+                                "tags": [
+                                    {
+                                        "tag": "component",
+                                        "value": "information"
+                                    },
+                                    {
+                                        "tag": "env",
+                                        "value": "{#ENV}"
+                                    },
+                                    {
+                                        "tag": "information",
+                                        "value": "host"
+                                    },
+                                    {
+                                        "tag": "support",
+                                        "value": "{#SUPPORT}"
+                                    }
+                                ],
+                                "trigger_prototypes": [
+                                    {
+                                        "uuid": "3cb7d6d7f3a8441cb9a4ab5ed602423c",
+                                        "expression": "change(/Template - Hedras Herberg - Website/WEBSITE.HOST[{#DOMAIN}])<>0",
+                                        "name": "HH - Host change for {#DOMAIN} {ITEM.LASTVALUE1}",
+                                        "url": "{#URL}",
+                                        "priority": "INFO",
+                                        "description": "Env :        {#ENV}\nSupport :  {#SUPPORT}\nServer :    {#SERVER}",
+                                        "tags": [
+                                            {
+                                                "tag": "env",
+                                                "value": "{#ENV}"
+                                            },
+                                            {
+                                                "tag": "information",
+                                                "value": "host"
+                                            },
+                                            {
+                                                "tag": "scope",
+                                                "value": "information"
+                                            },
+                                            {
+                                                "tag": "support",
+                                                "value": "{#SUPPORT}"
+                                            }
+                                        ]
+                                    }
+                                ]
                             },
                             {
                                 "uuid": "2e6fcc4b072c4bc9b55ba2475b8a9e95",
-                                "name": "HH - WebPage Code: {#URL}",
+                                "name": "HH - WebPage Code: {#DOMAIN}",
                                 "key": "WEBSITE.HTTPCODE[{#URL}]",
-                                "delay": "{$INTERVAL_HTTPCODE}"
+                                "delay": "{$INTERVAL_HTTPCODE}",
+                                "description": "Env :        {#ENV}\nSupport :  {#SUPPORT}\nServer :    {#SERVER}",
+                                "tags": [
+                                    {
+                                        "tag": "component",
+                                        "value": "information"
+                                    },
+                                    {
+                                        "tag": "env",
+                                        "value": "{#ENV}"
+                                    },
+                                    {
+                                        "tag": "information",
+                                        "value": "status_code"
+                                    },
+                                    {
+                                        "tag": "support",
+                                        "value": "{#SUPPORT}"
+                                    }
+                                ],
+                                "trigger_prototypes": [
+                                    {
+                                        "uuid": "9c1a237c081e4eeca0e0658b34a14d65",
+                                        "expression": "avg(/Template - Hedras Herberg - Website/WEBSITE.HTTPCODE[{#URL}],3)<>200",
+                                        "name": "HH - WebPage Code {#DOMAIN} (not equal 200 for 3m)",
+                                        "url": "{#URL}",
+                                        "priority": "AVERAGE",
+                                        "description": "Env :        {#ENV}\nSupport :  {#SUPPORT}\nServer :    {#SERVER}",
+                                        "dependencies": [
+                                            {
+                                                "name": "HH - WebPage Code {#DOMAIN} (not equal 200 for 5m)",
+                                                "expression": "avg(/Template - Hedras Herberg - Website/WEBSITE.HTTPCODE[{#URL}],5)<>200"
+                                            }
+                                        ],
+                                        "tags": [
+                                            {
+                                                "tag": "component",
+                                                "value": "perf"
+                                            },
+                                            {
+                                                "tag": "env",
+                                                "value": "{#ENV}"
+                                            },
+                                            {
+                                                "tag": "perf",
+                                                "value": "website"
+                                            },
+                                            {
+                                                "tag": "support",
+                                                "value": "{#SUPPORT}"
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        "uuid": "143dea8283c84db18d6d746e31cdb42e",
+                                        "expression": "avg(/Template - Hedras Herberg - Website/WEBSITE.HTTPCODE[{#URL}],5)<>200",
+                                        "name": "HH - WebPage Code {#DOMAIN} (not equal 200 for 5m)",
+                                        "url": "{#URL}",
+                                        "priority": "HIGH",
+                                        "description": "Env :        {#ENV}\nSupport :  {#SUPPORT}\nServer :    {#SERVER}",
+                                        "tags": [
+                                            {
+                                                "tag": "component",
+                                                "value": "perf"
+                                            },
+                                            {
+                                                "tag": "env",
+                                                "value": "{#ENV}"
+                                            },
+                                            {
+                                                "tag": "perf",
+                                                "value": "website"
+                                            },
+                                            {
+                                                "tag": "support",
+                                                "value": "{#SUPPORT}"
+                                            }
+                                        ]
+                                    }
+                                ]
                             },
                             {
                                 "uuid": "69f5280667694284bcbb41808643a7a5",
@@ -181,18 +386,23 @@
                                 "delay": "{$INTERVAL_SSL}",
                                 "trends": "0",
                                 "value_type": "CHAR",
+                                "description": "Env :        {#ENV}\nSupport :  {#SUPPORT}\nServer :    {#SERVER}",
                                 "tags": [
-                                    {
-                                        "tag": "component",
-                                        "value": "check"
-                                    },
                                     {
                                         "tag": "component",
                                         "value": "information"
                                     },
                                     {
+                                        "tag": "env",
+                                        "value": "{#ENV}"
+                                    },
+                                    {
                                         "tag": "information",
                                         "value": "ssl"
+                                    },
+                                    {
+                                        "tag": "support",
+                                        "value": "{#SUPPORT}"
                                     }
                                 ],
                                 "trigger_prototypes": [
@@ -200,7 +410,9 @@
                                         "uuid": "b870627cd83647c48d2b94a471a9c29c",
                                         "expression": "last(/Template - Hedras Herberg - Website/WEBSITE.SSL[{#DOMAIN}])<{$DAYS_SSL_FIRST}",
                                         "name": "HH - SSL {#DOMAIN} expires in less than {ITEM.LASTVALUE1} days",
+                                        "url": "{#URL}",
                                         "priority": "AVERAGE",
+                                        "description": "Env :        {#ENV}\nSupport :  {#SUPPORT}\nServer :    {#SERVER}",
                                         "dependencies": [
                                             {
                                                 "name": "HH - SSL {#DOMAIN} expires in less than {ITEM.LASTVALUE1} days",
@@ -210,15 +422,19 @@
                                         "tags": [
                                             {
                                                 "tag": "component",
-                                                "value": "trigger"
+                                                "value": "ssl"
+                                            },
+                                            {
+                                                "tag": "env",
+                                                "value": "{#ENV}"
                                             },
                                             {
                                                 "tag": "step",
                                                 "value": "first"
                                             },
                                             {
-                                                "tag": "trigger",
-                                                "value": "ssl"
+                                                "tag": "support",
+                                                "value": "{#SUPPORT}"
                                             }
                                         ]
                                     },
@@ -226,19 +442,25 @@
                                         "uuid": "5bcde83e00624163a840e11bf8bf4ca9",
                                         "expression": "last(/Template - Hedras Herberg - Website/WEBSITE.SSL[{#DOMAIN}])<{$DAYS_SSL_SECOND}",
                                         "name": "HH - SSL {#DOMAIN} expires in less than {ITEM.LASTVALUE1} days",
+                                        "url": "{#URL}",
                                         "priority": "HIGH",
+                                        "description": "Env :        {#ENV}\nSupport :  {#SUPPORT}\nServer :    {#SERVER}",
                                         "tags": [
                                             {
                                                 "tag": "component",
-                                                "value": "trigger"
+                                                "value": "ssl"
+                                            },
+                                            {
+                                                "tag": "env",
+                                                "value": "{#ENV}"
                                             },
                                             {
                                                 "tag": "step",
                                                 "value": "second"
                                             },
                                             {
-                                                "tag": "trigger",
-                                                "value": "ssl"
+                                                "tag": "support",
+                                                "value": "{#SUPPORT}"
                                             }
                                         ]
                                     }
@@ -248,14 +470,24 @@
                         "graph_prototypes": [
                             {
                                 "uuid": "8e37d7b380384325be8c3378b12a0590",
-                                "name": "WebPage Perf {#DOMAIN}",
+                                "name": "HH - Graphique Webpage {#DOMAIN}",
                                 "graph_items": [
                                     {
                                         "color": "0080FF",
                                         "calc_fnc": "ALL",
                                         "item": {
                                             "host": "Template - Hedras Herberg - Website",
-                                            "key": "web.page.perf[https://www.{#DOMAIN}]"
+                                            "key": "web.page.perf[{#URL}]"
+                                        }
+                                    },
+                                    {
+                                        "sortorder": "1",
+                                        "color": "199C0D",
+                                        "yaxisside": "RIGHT",
+                                        "calc_fnc": "ALL",
+                                        "item": {
+                                            "host": "Template - Hedras Herberg - Website",
+                                            "key": "WEBSITE.HTTPCODE[{#URL}]"
                                         }
                                     }
                                 ]
@@ -265,6 +497,18 @@
                             {
                                 "lld_macro": "{#DOMAIN}",
                                 "path": "$.Domain"
+                            },
+                            {
+                                "lld_macro": "{#ENV}",
+                                "path": "$.ENV"
+                            },
+                            {
+                                "lld_macro": "{#SERVER}",
+                                "path": "$.SERVER"
+                            },
+                            {
+                                "lld_macro": "{#SUPPORT}",
+                                "path": "$.SUPPORT"
                             },
                             {
                                 "lld_macro": "{#URL}",
@@ -345,7 +589,7 @@
                     },
                     {
                         "macro": "{$INTERVAL_HOST}",
-                        "value": "1m",
+                        "value": "1h",
                         "description": "Interval for item \"WebPage  Host\""
                     },
                     {
@@ -367,6 +611,11 @@
                         "macro": "{$INTERVAL_SSL}",
                         "value": "1d",
                         "description": "Interval for item \"Check SSL\""
+                    },
+                    {
+                        "macro": "{$KEEP_LOST}",
+                        "value": "7d",
+                        "description": "Keep lost resources period in Discovery"
                     }
                 ],
                 "dashboards": [
@@ -385,14 +634,14 @@
                                             {
                                                 "type": "INTEGER",
                                                 "name": "rows",
-                                                "value": "4"
+                                                "value": "3"
                                             },
                                             {
                                                 "type": "GRAPH_PROTOTYPE",
                                                 "name": "graphid",
                                                 "value": {
                                                     "host": "Template - Hedras Herberg - Website",
-                                                    "name": "WebPage Perf {#DOMAIN}"
+                                                    "name": "HH - Graphique Webpage {#DOMAIN}"
                                                 }
                                             }
                                         ]
