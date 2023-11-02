@@ -132,8 +132,8 @@ esac
 
 # Main
 function main(){
-    if [[ ! $(git pull --dry-run --quiet) ]];then
-        coming_soon "A new version is available \nPlease use this command 'git pull origin'"
+    if [[ $(git pull origin --dry-run --quiet) ]];then
+        printf "${blue}A new version is available \nPlease use this command 'git pull origin'\n${reset}"
     fi
     cat <<EOF
 
