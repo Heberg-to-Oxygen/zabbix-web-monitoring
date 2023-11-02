@@ -1,7 +1,7 @@
 {
     "zabbix_export": {
         "version": "6.0",
-        "date": "2023-11-01T20:14:45Z",
+        "date": "2023-11-02T18:20:58Z",
         "groups": [
             {
                 "uuid": "d70e8a214c754a3d9b8e9940eaad65c9",
@@ -131,6 +131,12 @@
                                         "url": "{#URL}",
                                         "priority": "HIGH",
                                         "description": "Env :        {#ENV}\nSupport :  {#SUPPORT}\nServer :    {#SERVER}",
+                                        "dependencies": [
+                                            {
+                                                "name": "HH - Website {#DOMAIN} Down !!!",
+                                                "expression": "avg(/Template - Hedras Herberg - Website/WEBSITE.HTTPCODE[{#URL}],5)<>200 and avg(/Template - Hedras Herberg - Website/web.page.perf[{#URL}],5)>3"
+                                            }
+                                        ],
                                         "tags": [
                                             {
                                                 "tag": "component",
@@ -358,6 +364,12 @@
                                         "url": "{#URL}",
                                         "priority": "HIGH",
                                         "description": "Env :        {#ENV}\nSupport :  {#SUPPORT}\nServer :    {#SERVER}",
+                                        "dependencies": [
+                                            {
+                                                "name": "HH - Website {#DOMAIN} Down !!!",
+                                                "expression": "avg(/Template - Hedras Herberg - Website/WEBSITE.HTTPCODE[{#URL}],5)<>200 and avg(/Template - Hedras Herberg - Website/web.page.perf[{#URL}],5)>3"
+                                            }
+                                        ],
                                         "tags": [
                                             {
                                                 "tag": "component",
@@ -463,6 +475,32 @@
                                                 "value": "{#SUPPORT}"
                                             }
                                         ]
+                                    }
+                                ]
+                            }
+                        ],
+                        "trigger_prototypes": [
+                            {
+                                "uuid": "03356d63bfb5450c960fc7557954a2bd",
+                                "expression": "avg(/Template - Hedras Herberg - Website/WEBSITE.HTTPCODE[{#URL}],5)<>200 and avg(/Template - Hedras Herberg - Website/web.page.perf[{#URL}],5)>3",
+                                "name": "HH - Website {#DOMAIN} Down !!!",
+                                "priority": "DISASTER",
+                                "tags": [
+                                    {
+                                        "tag": "component",
+                                        "value": "down"
+                                    },
+                                    {
+                                        "tag": "down",
+                                        "value": "website"
+                                    },
+                                    {
+                                        "tag": "env",
+                                        "value": "{#ENV}"
+                                    },
+                                    {
+                                        "tag": "support",
+                                        "value": "{#SUPPORT}"
                                     }
                                 ]
                             }
