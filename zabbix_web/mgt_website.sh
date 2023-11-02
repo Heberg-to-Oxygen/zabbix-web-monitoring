@@ -3,7 +3,7 @@
 # Author : DJERBI Florian
 # Object : Management a server for website in a zabbix discovery
 # Creation Date : 10/24/2023
-# Modification Date : 10/25/2023
+# Modification Date : 11/02/2023
 ###########################
 
 #
@@ -148,27 +148,27 @@ EOF
     read -p "Pleace choose your action : " choice
 case $choice in
     1)
-        coming_soon "$@"
+        info_text "\nFeature coming soon !"
         sleep 2
         update_website "$@"
         ;;
     2)
-        coming_soon "$@"
+        info_text "\nFeature coming soon !"
         sleep 2
         update_website "$@"
         ;;
     3)
-        coming_soon "$@"
+        info_text "\nFeature coming soon !"
         sleep 2
         update_website "$@"
         ;;
     4)
-        coming_soon "$@"
+        info_text "\nFeature coming soon !"
         sleep 2
         update_website "$@"
 	;;
     5)
-        coming_soon "$@"
+        info_text "\nFeature coming soon !"
         sleep 2
         update_website "$@"
 	;;

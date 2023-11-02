@@ -17,14 +17,9 @@ source mgt_server.sh
 # TEMPLATES FUNCTIONS
 #
 
-# Coming soon
-function coming_soon(){
-    printf "\n${_blue}Feature coming soon !${_reset}\n"
-}
-
 # Wrong choice
 function error_choice(){
-    printf "\n${_red}Please make a correct choice !${_reset}\n"
+    error_text "Please make a correct choice !"
     $1 "$@"
 }
 
@@ -38,9 +33,15 @@ function good_text(){
     printf "${_green}${1}${_reset}\n"
 }
 
+# Info text
+function info_text(){
+    printf "${_blue}${1}${_reset}\n"
+}
+
+
 # Exit
 function exit_cli(){
-    printf "\n${_blue}Thanks you for use this script :)${_reset}\n\n"
+    info_text "\nThanks you for use this script :)\n"
     sleep 1
     exit
 }
