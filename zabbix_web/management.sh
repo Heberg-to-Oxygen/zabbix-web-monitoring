@@ -3,7 +3,7 @@
 # Author : DJERBI Florian
 # Object : Management a website with zabbix discovery
 # Creation Date : 07/28/2023
-# Modification Date : 10/25/2023
+# Modification Date : 11/02/2023
 ###########################
 
 #
@@ -132,6 +132,9 @@ esac
 
 # Main
 function main(){
+    if [[ ! $(git pull --dry-run --quiet) ]];then
+        coming_soon "A new version is available \nPlease use this command 'git pull origin'"
+    fi
     cat <<EOF
 
   1 - Website
