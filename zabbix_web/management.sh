@@ -3,7 +3,7 @@
 # Author : DJERBI Florian
 # Object : Management a website with zabbix discovery
 # Creation Date : 07/28/2023
-# Modification Date : 11/02/2023
+# Modification Date : 11/03/2023
 ###########################
 
 #
@@ -83,7 +83,7 @@ case $choice in
         list_website "$@"
 	;;
     9)
-        main "$@"
+        main_menu "$@"
 	;;
     0)
         exit_cli "$@"
@@ -120,7 +120,7 @@ case $choice in
         list_server "$@"
         ;;
     9)
-        main "$@"
+        main_menu "$@"
         ;;
     0)
         exit_cli "$@"
@@ -131,11 +131,8 @@ case $choice in
 esac
 }
 
-# Main
-function main(){
-    if [[ $(git pull origin --dry-run --quiet) ]];then
-        printf "${blue}A new version is available \nPlease use this command 'git pull origin'\n${reset}"
-    fi
+# Main Menu
+function main_menu(){
     cat <<EOF
 
   1 - Website
@@ -154,9 +151,17 @@ case $choice in
         exit_cli "$@"
         ;;
     *)
-        error_choice "main"
+        error_choice "main_menu"
 	;;
 esac
+}
+
+# Main
+function main(){
+    if [[ $(git pull origin --dry-run --quiet) ]];then
+        info_text "A new version is available \nPlease use this command 'git pull origin'"
+    fi
+    main_menu "$@"
 }
 
 main "$@"
