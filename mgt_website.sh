@@ -26,7 +26,7 @@ function add_website() {
     else
         error_text "You have an empty variable please fill all informations !"
     fi
-    mgt_website "$@"
+    exit_cli "$@"
 }
 
 ## Choose domain in add website

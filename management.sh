@@ -38,7 +38,6 @@ function info_text(){
     printf "${_blue}${1}${_reset}\n"
 }
 
-
 # Exit
 function exit_cli(){
     info_text "\nThanks you for use this script :)\n"
@@ -56,106 +55,6 @@ function upper_to_lower(){
 #
 # FUNCTIONS
 #
-
-# Management Website
-function mgt_website(){
-    cat <<EOF
-
-  1 - Add website
-  2 - Update website
-  3 - Switch status website
-  4 - List website
-  9 - Back
-  0 - Exit
-EOF
-    read -p "Pleace choose your action : " choice
-case $choice in
-    1)
-        add_website "$@"
-        ;;
-    2)
-        update_website "$@"
-        ;;
-    3)
-        status_website "$@"
-        ;;
-    4)
-        list_website "$@"
-	;;
-    9)
-        main_menu "$@"
-	;;
-    0)
-        exit_cli "$@"
-        ;;
-    *)
-        error_choice "mgt_website"
-	;;
-esac
-}
-
-# Management server
-function mgt_server(){
-    cat <<EOF
-
-  1 - Add server
-  2 - Update server
-  3 - Switch status server
-  4 - List server
-  9 - Back
-  0 - Exit
-EOF
-    read -p "Pleace choose your action : " choice
-case $choice in
-    1)
-        add_server "$@"
-        ;;
-    2)
-        update_server "$@"
-        ;;
-    3)
-        status_server "$@"
-        ;;
-    4)
-        list_server "$@"
-        ;;
-    9)
-        main_menu "$@"
-        ;;
-    0)
-        exit_cli "$@"
-        ;;
-    *)
-        error_choice "mgt_server"
-        ;;
-esac
-}
-
-# Main Menu
-function main_menu(){
-    cat <<EOF
-
-  1 - Website
-  2 - Server
-  0 - Exit
-EOF
-    read -p "Pleace choose your action : " choice
-case $choice in
-    1)
-        mgt_website "$@"
-        ;;
-    2)
-        mgt_server "$@"
-        ;;
-    0)
-        exit_cli "$@"
-        ;;
-    *)
-        error_choice "main_menu"
-	;;
-esac
-}
-
 function msgHelp(){
         printf '%s\n' "Help for monitoring websites zabbix
 
@@ -180,6 +79,16 @@ function getParams(){
     case "$1" in
       help)
         msgHelp "$@"
+       	;;
+      add)
+        if [ -z $2 ];then
+	  msgHelp "$@"
+        elif [ $2 == "server" ] || [ $2 == "website" ];then
+          add_$2 "$@"
+	else
+	  msgHelp "$@"
+	fi
+	break
        	;;
       *)
         msgHelp "$@"
